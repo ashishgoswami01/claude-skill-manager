@@ -43,6 +43,7 @@ site:github.com "SKILL.md" claude "[TASK]"
 ## Known High-Quality Skill Authors (as of May 2026)
 
 - `JuliusBrussee` — caveman (token compression), cavekit (build system), caveman-review
+- `ruvnet` — ruflo (39 skills: swarm orchestration, AgentDB memory, SPARC methodology, GitHub automation, multi-agent AI): `https://github.com/ruvnet/ruflo` → skills in `.claude/skills/`
 - Community skills: search GitHub topics for latest
 
 ## Evaluation Criteria for Fetched Skills
