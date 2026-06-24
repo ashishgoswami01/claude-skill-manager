@@ -199,12 +199,13 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
     <div class="lico">✍️</div>
     <h2>Blog Admin</h2>
     <p>Sign in to manage your blog posts and media</p>
-    <input type="password" id="pwIn" placeholder="Admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+    <input type="text" id="unIn" placeholder="Username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()" />
+    <input type="password" id="pwIn" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
     <button onclick="doLogin()">Sign In →</button>
     <div class="lerr" id="lerr"></div>
     <div class="lhint">
-      Default password is set in <code>config.php</code><br>
-      Default: <strong>admin123</strong>
+      Credentials are set in <code>config.php</code><br>
+      Default: <strong>admin001</strong> / <strong>admin002</strong>
     </div>
   </div>
 </div>
@@ -344,7 +345,7 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
           <div class="card">
             <div class="ch"><h2>Password</h2></div>
             <div class="cb">
-              <p style="font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:14px">To change the password, edit <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">config.php</code> on your server via FTP and update <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ADMIN_PASSWORD</code>.</p>
+              <p style="font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:14px">To change credentials, edit <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">config.php</code> on your server via FTP and update <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ADMIN_USERNAME</code> and <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ADMIN_PASSWORD</code>.</p>
               <div class="fg"><label>API Secret Key</label><p style="font-size:12px;color:var(--mu);margin-top:4px">Also change <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">SECRET_KEY</code> in config.php to something random for security.</p></div>
             </div>
           </div>
@@ -398,13 +399,14 @@ function authFetch(url,opts={}){return fetch(url,{...opts,headers:{'Content-Type
 
 // ── Auth ──
 function doLogin(){
+  const un=document.getElementById('unIn').value.trim();
   const pw=document.getElementById('pwIn').value;
-  if(!pw){document.getElementById('lerr').textContent='Enter password';return}
-  fetch(API+'?action=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})})
+  if(!un||!pw){document.getElementById('lerr').textContent='Enter username and password';return}
+  fetch(API+'?action=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:un,password:pw})})
     .then(r=>r.json())
     .then(d=>{
       if(d.token){TOKEN=d.token;sessionStorage.setItem('blog_tok',TOKEN);startApp()}
-      else{document.getElementById('lerr').textContent='Incorrect password'}
+      else{document.getElementById('lerr').textContent=d.error||'Incorrect username or password'}
     }).catch(()=>{document.getElementById('lerr').textContent='Cannot reach server. Check api.php is uploaded.'})
 }
 function doLogout(){sessionStorage.removeItem('blog_tok');location.reload()}

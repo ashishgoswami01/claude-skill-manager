@@ -88,9 +88,10 @@ switch ($action) {
 
 // ── Login ─────────────────────────────────────────────────────────────────────
 function handleLogin($body) {
-    $pw = $body['password'] ?? '';
-    if (!$pw) err('Password required');
-    if ($pw !== ADMIN_PASSWORD) err('Incorrect password', 401);
+    $user = $body['username'] ?? '';
+    $pw   = $body['password'] ?? '';
+    if (!$user || !$pw) err('Username and password required');
+    if ($user !== ADMIN_USERNAME || $pw !== ADMIN_PASSWORD) err('Incorrect username or password', 401);
     resp(['token' => makeToken()]);
 }
 
