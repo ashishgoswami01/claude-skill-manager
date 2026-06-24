@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Blog</title>
+  <meta name="description" content="A modern blog with full CMS admin panel" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">✍️ <span>My Blog</span></a>
+    <div class="nav-right">
+      <a href="index.html">Home</a>
+      <a href="#" onclick="document.getElementById('searchInput').focus();return false">Search</a>
+      <a href="admin/index.html" class="nav-btn">Admin Panel ↗</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">✨ Welcome</div>
+  <h1>Ideas Worth Sharing</h1>
+  <p>Explore articles, tutorials, and thoughts on technology, design, and everything in between.</p>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search posts…" autocomplete="off" />
+    <button onclick="document.getElementById('searchInput').dispatchEvent(new Event('input'))">Search</button>
+  </div>
+</section>
+
+<div class="tags-bar" id="tagBar"></div>
+
+<section class="posts-section">
+  <div class="section-top">
+    <h2>Latest Posts</h2>
+    <span class="count" id="postsCount"></span>
+  </div>
+  <div class="posts-grid" id="postsGrid">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+  <div class="pagination" id="pagination"></div>
+</section>
+
+<footer class="footer">
+  <p>Built with ❤️ &nbsp;·&nbsp; <a href="admin/index.html">Admin Panel</a> &nbsp;·&nbsp; <a href="#">Back to top ↑</a></p>
+</footer>
+
+<script src="assets/js/blog.js"></script>
+</body>
+</html>
