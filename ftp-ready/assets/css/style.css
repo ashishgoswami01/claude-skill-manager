@@ -117,6 +117,65 @@ img{max-width:100%;height:auto;display:block}
 .spinner{width:36px;height:36px;border:3px solid var(--bd);border-top-color:var(--pu);border-radius:50%;animation:spin .75s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ── Section base ──────────────────────────────────────────────────────────── */
+.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--pu);margin-bottom:10px}
+.sec-h{font-size:clamp(26px,3.5vw,42px);font-weight:800;line-height:1.18;letter-spacing:-.5px;color:var(--tx);margin-bottom:14px}
+.sec-h span{color:var(--pu)}
+.sec-p{font-size:16px;color:var(--mu);line-height:1.7;max-width:560px}
+
+/* ── What We Cover ─────────────────────────────────────────────────────────── */
+.what-sec{background:var(--bg2);padding:90px 28px}
+.what-in{max-width:var(--max);margin:0 auto}
+.what-in .sec-p{margin-bottom:48px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.cat-card{background:var(--bg);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px;transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr);box-shadow:var(--shadow)}
+.cat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:rgba(37,99,235,.25)}
+.cat-ico{font-size:34px;margin-bottom:14px;width:56px;height:56px;background:var(--pug);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.cat-title{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--tx)}
+.cat-desc{font-size:13.5px;color:var(--mu);line-height:1.6}
+
+/* ── Stats band ────────────────────────────────────────────────────────────── */
+.stats-band{background:var(--bg3);padding:90px 28px}
+.stats-in{max-width:var(--max);margin:0 auto}
+.stats-in .sec-h{margin-bottom:44px}
+.st-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.st-card{background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px 24px;box-shadow:var(--shadow);transition:transform var(--tr)}
+.st-card:hover{transform:translateY(-2px)}
+.st-num{font-size:44px;font-weight:800;color:var(--pu);letter-spacing:-1.5px;line-height:1;margin-bottom:10px}
+.st-title{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.st-desc{font-size:12.5px;color:var(--mu);line-height:1.55}
+
+/* ── About band ────────────────────────────────────────────────────────────── */
+.about-band{background:var(--bg2);padding:90px 28px}
+.about-in{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.about-l .sec-p{margin-top:18px}
+.feat-list{display:flex;flex-direction:column;gap:22px}
+.feat-item{display:flex;gap:16px;align-items:flex-start}
+.feat-ico{font-size:22px;flex-shrink:0;width:48px;height:48px;background:var(--pug);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.feat-t{font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.feat-d{font-size:13.5px;color:var(--mu);line-height:1.6}
+
+/* ── Contact band ──────────────────────────────────────────────────────────── */
+.contact-band{background:var(--bg3);padding:90px 28px}
+.contact-in{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1.3fr;gap:64px;align-items:start}
+.contact-l .sec-p{margin:14px 0 32px}
+.c-items{display:flex;flex-direction:column;gap:18px}
+.c-item{display:flex;gap:14px;align-items:flex-start}
+.c-ico{width:40px;height:40px;background:var(--pug);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.c-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dim);margin-bottom:3px}
+.c-val{font-size:14px;font-weight:500;color:var(--tx)}
+.c-val a{color:var(--tx);text-decoration:none}
+.c-val a:hover{color:var(--pu)}
+.map-wrap{border-radius:var(--r);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);border:1.5px solid var(--bd)}
+.map-wrap iframe{display:block;width:100%;height:420px;border:0}
+
+/* ── Scroll offset for sticky nav ─────────────────────────────────────────── */
+[id]{scroll-margin-top:80px}
+
+@media(max-width:900px){
+  .about-in{grid-template-columns:1fr;gap:40px}
+  .contact-in{grid-template-columns:1fr;gap:36px}
+}
 @media(max-width:768px){
   .nav-in{padding:0 16px}
   .hero{padding:60px 16px 40px}
@@ -125,4 +184,10 @@ img{max-width:100%;height:auto;display:block}
   .posts-grid{grid-template-columns:1fr}
   .nav-links a:not(.nav-btn){display:none}
   .post-page{padding:32px 16px 60px}
+  .what-sec,.stats-band,.about-band,.contact-band{padding:60px 16px}
+  .cat-grid{grid-template-columns:1fr}
+  .st-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .st-row{grid-template-columns:1fr}
 }
