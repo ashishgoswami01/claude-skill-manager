@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Blog CMS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2330;--bg4:#21262d;--bg5:#252d3d;
+  --bd:#30363d;--bdl:#21262d;
+  --tx:#e6edf3;--mu:#8b949e;--dim:#484f58;
+  --pu:#a855f7;--pud:#7c3aed;--pug:rgba(168,85,247,.14);
+  --bu:#3b82f6;--bug:rgba(59,130,246,.14);
+  --gu:#22c55e;--gug:rgba(34,197,94,.14);
+  --ru:#f43f5e;--rug:rgba(244,63,94,.14);
+  --au:#f59e0b;--aug:rgba(245,158,11,.14);
+  --tu:#2dd4bf;
+  --r:10px;--rs:6px;--tr:170ms ease;
+  --sw:228px;--th:62px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{font-size:15px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;overflow:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:99px}
+
+/* Sidebar */
+.sb{width:var(--sw);background:var(--bg2);border-right:1px solid var(--bd);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:200;transition:transform var(--tr)}
+.sb-top{height:var(--th);display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.sb-ico{font-size:22px}.sb-n{font-weight:800;font-size:14px;line-height:1.1}.sb-s{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
+.ni{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rs);color:var(--mu);font-size:13.5px;font-weight:500;cursor:pointer;transition:background var(--tr),color var(--tr);user-select:none}
+.ni:hover{background:var(--bg3);color:var(--tx)}.ni.on{background:var(--pug);color:var(--pu)}
+.ni-i{font-size:15px;width:20px;text-align:center;flex-shrink:0}.ni-l{flex:1}
+.ni-b{background:var(--pud);color:#fff;font-size:10px;padding:1px 7px;border-radius:99px;font-weight:600}
+.sep{height:1px;background:var(--bd);margin:6px 8px}
+.sb-bot{padding:12px 18px;border-top:1px solid var(--bd);font-size:11px;color:var(--dim)}
+
+/* Main */
+.main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;min-height:100vh;overflow:hidden}
+.topbar{height:var(--th);background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 26px;flex-shrink:0}
+.tb-l{display:flex;align-items:center;gap:12px}
+.burger{display:none;background:none;border:none;color:var(--mu);font-size:18px;cursor:pointer}
+.crumb{font-size:14.5px;font-weight:700;letter-spacing:-.2px}
+.tb-r{display:flex;align-items:center;gap:10px}
+.live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mu);background:var(--bg3);border:1px solid var(--bd);border-radius:99px;padding:4px 12px}
+.live-d{width:7px;height:7px;background:var(--gu);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.content{flex:1;overflow-y:auto;padding:28px}
+.panel{display:none;animation:fi .18s ease}.panel.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.sh{margin-bottom:22px}.sh h1{font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-.3px}.sh p{font-size:13.5px;color:var(--mu)}
+
+/* Login */
+#loginWrap{position:fixed;inset:0;background:var(--bg);display:none;align-items:center;justify-content:center;z-index:999}
+.lbox{width:360px;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:40px;text-align:center}
+.lico{font-size:44px;margin-bottom:16px}.lbox h2{font-size:20px;font-weight:800;margin-bottom:6px}.lbox p{font-size:13.5px;color:var(--mu);margin-bottom:28px;line-height:1.6}
+.lbox input{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);color:var(--tx);font-size:14px;outline:none;margin-bottom:12px;transition:border-color var(--tr);font-family:inherit}
+.lbox input:focus{border-color:var(--pu);box-shadow:0 0 0 3px var(--pug)}
+.lbox button{width:100%;padding:12px;background:var(--pud);border:none;border-radius:var(--rs);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:background var(--tr);font-family:inherit}
+.lbox button:hover{background:var(--pu)}.lerr{color:var(--ru);font-size:13px;margin-top:10px;min-height:20px}
+.lhint{margin-top:16px;font-size:12px;color:var(--dim);background:var(--bg3);border-radius:var(--rs);padding:10px 14px;line-height:1.6;text-align:left}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px}
+.sc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;transition:transform var(--tr)}
+.sc:hover{transform:translateY(-2px)}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.p::before{background:var(--pu)}.g::before{background:var(--gu)}.a::before{background:var(--au)}.b::before{background:var(--bu)}
+.s-ico{font-size:22px;margin-bottom:8px}.s-num{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.5px}.s-lab{font-size:12px;color:var(--mu);margin-top:4px}
+
+/* Card */
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--bd)}
+.ch h2{font-size:14px;font-weight:600}.cb{padding:20px}
+
+/* Toolbar */
+.tb{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.tb-r{display:flex;align-items:center;gap:8px}
+.si{padding:8px 12px;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rs);color:var(--tx);font-size:13px;outline:none;transition:border-color var(--tr);font-family:inherit}
+.si:focus{border-color:var(--pu)}
+
+/* Table */
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse}
+th{background:var(--bg3);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);border-bottom:1px solid var(--bd)}
+td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--bdl);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg3)}
+.tt{font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tex{color:var(--mu);font-size:12px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td{font-size:11.5px;color:var(--dim);white-space:nowrap}
+
+/* Badges */
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.b-pub{background:var(--gug);color:var(--gu)}.b-drft{background:var(--aug);color:var(--au)}
+.tag-c{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;background:var(--pug);color:var(--pu);border:1px solid rgba(168,85,247,.25);margin:1px;font-weight:500}
+
+/* Buttons */
+.bp{padding:9px 18px;background:var(--pud);border:none;border-radius:var(--rs);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:background var(--tr);font-family:inherit}
+.bp:hover{background:var(--pu)}
+.bg{padding:8px 14px;background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);color:var(--mu);font-size:13px;cursor:pointer;transition:all var(--tr);font-family:inherit}
+.bg:hover{border-color:var(--mu);color:var(--tx)}
+.bs{padding:5px 10px;font-size:12px}
+.bi{padding:5px 8px;background:var(--bg4);border:1px solid var(--bd);border-radius:var(--rs);color:var(--mu);font-size:13px;cursor:pointer;transition:all var(--tr);font-family:inherit}
+.bi:hover{background:var(--bg3)}
+.bi.ed:hover{border-color:var(--bu);color:var(--bu);background:var(--bug)}
+.bi.dl:hover{border-color:var(--ru);color:var(--ru);background:var(--rug)}
+
+/* Form */
+.fg{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.fg label{font-size:13px;font-weight:600}.fg small{font-size:11px;color:var(--dim)}.req{color:var(--ru)}
+.fi{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:9px 13px;color:var(--tx);font-size:13.5px;outline:none;font-family:inherit;transition:border-color var(--tr);width:100%}
+.fi:focus{border-color:var(--pu);box-shadow:0 0 0 3px var(--pug)}
+textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* Quill */
+#editorWrap label{font-size:13px;font-weight:600;display:block;margin-bottom:7px}
+.ql-toolbar.ql-snow{background:var(--bg3);border-color:var(--bd)!important;border-radius:var(--rs) var(--rs) 0 0}
+.ql-container.ql-snow{background:var(--bg3);border-color:var(--bd)!important;border-radius:0 0 var(--rs) var(--rs);font-size:14px}
+.ql-editor{color:var(--tx);font-family:'Inter',sans-serif;line-height:1.7;min-height:240px;padding:16px 18px}
+.ql-editor.ql-blank::before{color:var(--dim)!important;font-style:normal!important}
+.ql-snow .ql-stroke{stroke:var(--mu)!important}.ql-snow .ql-fill{fill:var(--mu)!important}.ql-snow .ql-picker{color:var(--mu)!important}
+.ql-snow .ql-picker-options{background:var(--bg2)!important;border-color:var(--bd)!important;border-radius:var(--rs)}
+.ql-snow.ql-toolbar button:hover .ql-stroke,.ql-snow.ql-toolbar button.ql-active .ql-stroke{stroke:var(--tx)!important}
+.ql-snow.ql-toolbar button:hover .ql-fill,.ql-snow.ql-toolbar button.ql-active .ql-fill{fill:var(--tx)!important}
+#editorWrap{margin-bottom:18px}
+
+/* Post layout */
+.post-layout{display:grid;grid-template-columns:1fr 336px;gap:20px;align-items:start}
+.sc-col{display:flex;flex-direction:column;gap:16px}
+.fa{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+
+/* Tags chips */
+.tag-chips{display:flex;flex-wrap:wrap;gap:4px;min-height:28px;padding:4px 0}
+.tag-chips .tag-c{cursor:pointer}.tag-chips .tag-c:hover{background:var(--rug);color:var(--ru);border-color:var(--ru)}
+
+/* Cover */
+.cvr-prev{display:none;margin-bottom:10px}
+.cvr-prev img{width:100%;border-radius:var(--rs);max-height:150px;object-fit:cover}
+
+/* Media */
+.drop-z{border:2px dashed var(--bd);border-radius:var(--r);padding:36px 24px;text-align:center;color:var(--mu);cursor:pointer;transition:all var(--tr);margin-bottom:20px}
+.drop-z:hover,.drop-z.ov{border-color:var(--pu);background:var(--pug);color:var(--tx)}
+.drop-ico{font-size:44px;margin-bottom:12px}.drop-z p{font-size:14px;font-weight:500;margin-bottom:6px}.drop-z small{font-size:12px}
+#fileIn{display:none}
+.prog-wrap{display:none;height:4px;background:var(--bg4);border-radius:99px;overflow:hidden;margin-top:10px;margin-bottom:16px}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--pud),var(--pu));border-radius:99px;width:0;transition:width .3s}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+.mc{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden;transition:border-color var(--tr);position:relative}
+.mc:hover{border-color:var(--pu)}.mc:hover .mov{opacity:1}
+.mthumb{width:100%;height:138px;object-fit:cover;display:block}
+.mthumb.ph{display:flex;align-items:center;justify-content:center;font-size:42px;color:var(--mu);background:var(--bg4)}
+.minfo{padding:9px 10px}.mname{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.msize{font-size:11px;color:var(--dim);margin-top:2px}
+.mov{position:absolute;inset:0;background:rgba(0,0,0,.65);opacity:0;transition:opacity var(--tr);display:flex;align-items:center;justify-content:center;gap:8px}
+
+/* Toggle */
+.tog{position:relative;display:inline-block;width:38px;height:21px;cursor:pointer;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tsl{position:absolute;inset:0;background:var(--bg4);border-radius:99px;border:1px solid var(--bd);transition:var(--tr)}
+.tsl::before{content:'';position:absolute;width:15px;height:15px;top:2px;left:2px;background:var(--dim);border-radius:50%;transition:var(--tr)}
+.tog input:checked+.tsl{background:var(--pud);border-color:var(--pu)}
+.tog input:checked+.tsl::before{background:#fff;transform:translateX(17px)}
+
+/* Modal */
+.mdbg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:center;justify-content:center}
+.mdbg.open{display:flex}
+.md{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);width:700px;max-width:96vw;max-height:88vh;display:flex;flex-direction:column}
+.mdh{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--bd)}
+.mdh strong{font-size:14px;font-weight:700}.mdx{background:none;border:none;color:var(--mu);font-size:18px;cursor:pointer;line-height:1}
+.mdx:hover{color:var(--tx)}.mdb{overflow-y:auto;padding:18px}.mdf{display:flex;gap:8px;justify-content:flex-end;padding:14px 20px;border-top:1px solid var(--bd)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:11px 20px;border-radius:var(--rs);font-size:13.5px;font-weight:500;background:var(--bg3);border:1px solid var(--bd);box-shadow:0 8px 28px rgba(0,0,0,.45);transform:translateY(12px);opacity:0;transition:all 240ms ease;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-color:rgba(34,197,94,.4);color:var(--gu)}.toast.er{border-color:rgba(244,63,94,.4);color:var(--ru)}.toast.in{border-color:rgba(59,130,246,.4);color:var(--bu)}
+
+/* Settings */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--bdl);gap:16px}
+.srow:last-child{border-bottom:none}
+.si2{flex:1}.sl{font-size:13px;font-weight:600}.sd{font-size:12px;color:var(--mu);margin-top:2px}
+
+@media(max-width:900px){.post-layout{grid-template-columns:1fr}.sg{grid-template-columns:1fr}}
+@media(max-width:700px){
+  .sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}.main{margin-left:0}.burger{display:block}.content{padding:16px}.form2{grid-template-columns:1fr}
+}
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginWrap" style="display:flex">
+  <div class="lbox">
+    <div class="lico">✍️</div>
+    <h2>Blog Admin</h2>
+    <p>Sign in to manage your blog posts and media</p>
+    <input type="password" id="pwIn" placeholder="Admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button onclick="doLogin()">Sign In →</button>
+    <div class="lerr" id="lerr"></div>
+    <div class="lhint">
+      Default password is set in <code>config.php</code><br>
+      Default: <strong>admin123</strong>
+    </div>
+  </div>
+</div>
+
+<!-- App -->
+<div id="appWrap" style="display:none;width:100%">
+  <aside class="sb" id="sb">
+    <div class="sb-top">
+      <div class="sb-ico">✍️</div>
+      <div><div class="sb-n">Blog Admin</div><div class="sb-s">Content Manager</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="ni on" data-tab="dashboard"><span class="ni-i">📊</span><span class="ni-l">Dashboard</span></div>
+      <div class="ni" data-tab="posts"><span class="ni-i">📝</span><span class="ni-l">All Posts</span><span class="ni-b" id="niCnt">0</span></div>
+      <div class="ni" data-tab="new-post"><span class="ni-i">✨</span><span class="ni-l">New Post</span></div>
+      <div class="ni" data-tab="media"><span class="ni-i">🖼️</span><span class="ni-l">Media Library</span></div>
+      <div class="sep"></div>
+      <div class="ni" data-tab="settings"><span class="ni-i">⚙️</span><span class="ni-l">Settings</span></div>
+      <div class="ni" onclick="window.open('../index.html','_blank')" style="margin-top:auto"><span class="ni-i">🌐</span><span class="ni-l">View Blog ↗</span></div>
+    </nav>
+    <div class="sb-bot">Logged in as Admin</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="tb-l">
+        <button class="burger" onclick="document.getElementById('sb').classList.toggle('open')">☰</button>
+        <div class="crumb" id="crumb">Dashboard</div>
+      </div>
+      <div class="tb-r">
+        <div class="live"><div class="live-d"></div> Online</div>
+        <button class="bg bs" onclick="doLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Dashboard -->
+      <section class="panel on" id="tab-dashboard">
+        <div class="sh"><h1>Dashboard</h1><p>Blog overview</p></div>
+        <div class="stats">
+          <div class="sc p"><div class="s-ico">📝</div><div class="s-num" id="st-total">—</div><div class="s-lab">Total Posts</div></div>
+          <div class="sc g"><div class="s-ico">✅</div><div class="s-num" id="st-pub">—</div><div class="s-lab">Published</div></div>
+          <div class="sc a"><div class="s-ico">📋</div><div class="s-num" id="st-drft">—</div><div class="s-lab">Drafts</div></div>
+          <div class="sc b"><div class="s-ico">🖼️</div><div class="s-num" id="st-media">—</div><div class="s-lab">Media Files</div></div>
+        </div>
+        <div class="card"><div class="ch"><h2>Recent Posts</h2><button class="bg bs" onclick="goTab('posts')">View all →</button></div><div id="recentList"></div></div>
+      </section>
+
+      <!-- Posts -->
+      <section class="panel" id="tab-posts">
+        <div class="sh"><h1>All Posts</h1><p>Create, edit and delete posts</p></div>
+        <div class="tb">
+          <div class="tb-r">
+            <input class="si" id="postSearch" placeholder="Search posts…" oninput="filterPosts()" style="width:175px" />
+            <select class="si" id="statusF" onchange="filterPosts()"><option value="">All</option><option value="published">Published</option><option value="draft">Draft</option></select>
+          </div>
+          <button class="bp" onclick="goTab('new-post')">+ New Post</button>
+        </div>
+        <div class="tw"><table><thead><tr><th>Title</th><th>Status</th><th>Tags</th><th>Date</th><th>Actions</th></tr></thead><tbody id="postsTb"></tbody></table></div>
+      </section>
+
+      <!-- New/Edit Post -->
+      <section class="panel" id="tab-new-post">
+        <div class="sh"><h1 id="fmT">New Post</h1><p id="fmS">Write a new article</p></div>
+        <div class="post-layout">
+          <div>
+            <div class="card">
+              <div class="ch"><h2>Content</h2></div>
+              <div class="cb">
+                <div class="fg"><label>Title <span class="req">*</span></label><input class="fi" type="text" id="fTitle" placeholder="Post title…" oninput="autoSlug()" /></div>
+                <div id="editorWrap"><label>Content <span class="req">*</span></label><div id="quillEditor"></div></div>
+                <div class="fg"><label>Excerpt</label><textarea class="fi" id="fExcerpt" rows="3" placeholder="Short summary for the post list…"></textarea></div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-col">
+            <div class="card">
+              <div class="ch"><h2>Publish</h2></div>
+              <div class="cb">
+                <div class="fg"><label>Status</label><select class="fi" id="fStatus"><option value="draft">Draft</option><option value="published">Published</option></select></div>
+                <div class="fg"><label>URL Slug</label><input class="fi" type="text" id="fSlug" placeholder="post-url-slug" /><small>Auto-generated from title</small></div>
+                <div class="fa">
+                  <button class="bg bs" onclick="savePost('draft')">Save Draft</button>
+                  <button class="bp" onclick="savePost('published')">Publish →</button>
+                </div>
+                <input type="hidden" id="fId" />
+              </div>
+            </div>
+            <div class="card">
+              <div class="ch"><h2>Tags</h2></div>
+              <div class="cb">
+                <div class="fg"><input class="fi" type="text" id="fTagIn" placeholder="Add tag + Enter" onkeydown="addTag(event)" /></div>
+                <div class="tag-chips" id="tagChips"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="ch"><h2>Cover Image</h2></div>
+              <div class="cb">
+                <div class="cvr-prev" id="cvrPrev"><img id="cvrImg" src="" alt="Cover" /><button class="bg bs" style="margin-top:8px;width:100%" onclick="clearCover()">Remove</button></div>
+                <input type="hidden" id="fCover" />
+                <button class="bg" style="width:100%" onclick="openPicker(false)">🖼️ Choose from Media Library</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Media -->
+      <section class="panel" id="tab-media">
+        <div class="sh"><h1>Media Library</h1><p>Upload and manage images</p></div>
+        <div class="drop-z" id="dropZ" onclick="document.getElementById('fileIn').click()" ondragover="dov(event)" ondragleave="dol()" ondrop="ddp(event)">
+          <div class="drop-ico">📤</div><p>Click to upload or drag & drop files here</p><small>JPEG, PNG, GIF, WebP, SVG — max 8 MB each</small>
+        </div>
+        <input type="file" id="fileIn" accept="image/*,.svg" multiple onchange="handleFiles(this.files)" />
+        <div class="prog-wrap" id="progWrap"><div class="prog-bar" id="progBar"></div></div>
+        <div class="tb">
+          <input class="si" id="mSearch" placeholder="Search media…" oninput="filterMedia()" style="width:175px" />
+          <span style="font-size:13px;color:var(--mu)" id="mCnt">0 files</span>
+        </div>
+        <div class="mgrid" id="mgrid"></div>
+      </section>
+
+      <!-- Settings -->
+      <section class="panel" id="tab-settings">
+        <div class="sh"><h1>Settings</h1><p>Configure your blog</p></div>
+        <div class="sg">
+          <div class="card">
+            <div class="ch"><h2>Blog Info</h2></div>
+            <div class="cb">
+              <div class="fg"><label>Blog Name</label><input class="fi" id="sBlogName" /></div>
+              <div class="fg"><label>Description</label><input class="fi" id="sBlogDesc" /></div>
+              <div class="fg"><label>Author</label><input class="fi" id="sAuthor" /></div>
+              <button class="bp" onclick="saveSettings()">Save</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h2>Password</h2></div>
+            <div class="cb">
+              <p style="font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:14px">To change the password, edit <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">config.php</code> on your server via FTP and update <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ADMIN_PASSWORD</code>.</p>
+              <div class="fg"><label>API Secret Key</label><p style="font-size:12px;color:var(--mu);margin-top:4px">Also change <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">SECRET_KEY</code> in config.php to something random for security.</p></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h2>Storage Info</h2></div>
+            <div>
+              <div class="srow"><div class="si2"><div class="sl">Total Posts</div></div><span id="setP" style="color:var(--mu);font-size:13px">—</span></div>
+              <div class="srow"><div class="si2"><div class="sl">Media Files</div></div><span id="setM" style="color:var(--mu);font-size:13px">—</span></div>
+              <div class="srow"><div class="si2"><div class="sl">Storage</div><div class="sd">Files in /uploads/ on server</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h2>Danger Zone</h2></div>
+            <div>
+              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Posts</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('posts')">Delete</button></div>
+              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Media</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('media')">Delete</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- Media picker modal -->
+<div class="mdbg" id="pickerModal">
+  <div class="md">
+    <div class="mdh"><strong id="pickerTitle">Select Image</strong><button class="mdx" onclick="closePicker()">✕</button></div>
+    <div class="mdb"><div class="mgrid" id="pickerGrid"></div></div>
+    <div class="mdf"><button class="bg" onclick="closePicker()">Cancel</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script>
+'use strict';
+const API = '../api.php';
+let TOKEN = '', quill, allPosts = [], allMedia = [], editTags = [], pickerForEditor = false;
+
+// ── Helpers ──
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function fmt(iso){try{return new Date(iso).toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}catch{return ''}}
+function fsz(b){if(!b)return'';if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+let _tt;
+function toast(msg,type='in'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${type} show`;clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),3200)}
+function authFetch(url,opts={}){return fetch(url,{...opts,headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`,  ...(opts.headers||{})}})}
+
+// ── Auth ──
+function doLogin(){
+  const pw=document.getElementById('pwIn').value;
+  if(!pw){document.getElementById('lerr').textContent='Enter password';return}
+  fetch(API+'?action=login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})})
+    .then(r=>r.json())
+    .then(d=>{
+      if(d.token){TOKEN=d.token;sessionStorage.setItem('blog_tok',TOKEN);startApp()}
+      else{document.getElementById('lerr').textContent='Incorrect password'}
+    }).catch(()=>{document.getElementById('lerr').textContent='Cannot reach server. Check api.php is uploaded.'})
+}
+function doLogout(){sessionStorage.removeItem('blog_tok');location.reload()}
+
+(function(){
+  const t=sessionStorage.getItem('blog_tok');
+  if(t){TOKEN=t;document.getElementById('loginWrap').style.display='none';document.getElementById('appWrap').style.display='flex';startApp()}
+})()
+
+function startApp(){
+  document.getElementById('loginWrap').style.display='none';
+  document.getElementById('appWrap').style.display='flex';
+  initQuill();bindNav();loadAll();loadSettings()
+}
+
+// ── Nav ──
+function bindNav(){document.querySelectorAll('.ni[data-tab]').forEach(el=>el.addEventListener('click',()=>goTab(el.dataset.tab)))}
+function goTab(tab){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('on',n.dataset.tab===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`tab-${tab}`));
+  document.getElementById('crumb').textContent=tab.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  if(tab==='posts')renderPostsTable();
+  if(tab==='media')renderMedia();
+  if(tab==='dashboard')renderDashboard();
+  if(tab==='new-post')resetForm();
+  if(tab==='settings')updateStorageInfo();
+  document.getElementById('sb').classList.remove('open');
+}
+
+// ── Load ──
+async function loadAll(){await Promise.all([loadPosts(),loadMedia()]);renderDashboard()}
+async function loadPosts(){try{const r=await authFetch(API+'?action=posts');allPosts=await r.json();if(!Array.isArray(allPosts))allPosts=[]}catch{allPosts=[]};document.getElementById('niCnt').textContent=allPosts.length}
+async function loadMedia(){try{const r=await authFetch(API+'?action=media');allMedia=await r.json();if(!Array.isArray(allMedia))allMedia=[]}catch{allMedia=[]}}
+
+// ── Dashboard ──
+function renderDashboard(){
+  const pub=allPosts.filter(p=>p.status==='published').length;
+  document.getElementById('st-total').textContent=allPosts.length;
+  document.getElementById('st-pub').textContent=pub;
+  document.getElementById('st-drft').textContent=allPosts.length-pub;
+  document.getElementById('st-media').textContent=allMedia.length;
+  const rec=allPosts.slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
+  document.getElementById('recentList').innerHTML=rec.length
+    ?`<table><thead><tr><th>Title</th><th>Status</th><th>Date</th></tr></thead><tbody>${rec.map(p=>`<tr><td class="tt">${esc(p.title)}</td><td><span class="badge b-${p.status==='published'?'pub':'drft'}">${p.status}</span></td><td class="td">${fmt(p.createdAt)}</td></tr>`).join('')}</tbody></table>`
+    :`<div style="padding:24px;text-align:center;color:var(--mu);font-size:13.5px">No posts yet. <span style="color:var(--pu);cursor:pointer;font-weight:500" onclick="goTab('new-post')">Create your first post →</span></div>`
+}
+
+// ── Posts Table ──
+function renderPostsTable(list){
+  const posts=(list||allPosts).slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  const tb=document.getElementById('postsTb');
+  if(!posts.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--mu)">No posts found.</td></tr>';return}
+  tb.innerHTML=posts.map(p=>`<tr>
+    <td><div class="tt">${esc(p.title)}</div><div class="tex">${esc(p.excerpt||'')}</div></td>
+    <td><span class="badge b-${p.status==='published'?'pub':'drft'}">${p.status}</span></td>
+    <td>${(p.tags||[]).map(t=>`<span class="tag-c">${esc(t)}</span>`).join('')}</td>
+    <td class="td">${fmt(p.createdAt)}</td>
+    <td><div style="display:flex;gap:4px">
+      <button class="bi ed" onclick="editPost('${p.id}')" title="Edit">✏️</button>
+      <button class="bi" onclick="window.open('../post.php?id=${p.id}','_blank')" title="Preview">👁</button>
+      <button class="bi dl" onclick="deletePost('${p.id}')" title="Delete">🗑</button>
+    </div></td>
+  </tr>`).join('')
+}
+function filterPosts(){
+  const q=(document.getElementById('postSearch').value||'').toLowerCase();
+  const st=document.getElementById('statusF').value;
+  let list=allPosts;
+  if(st)list=list.filter(p=>p.status===st);
+  if(q)list=list.filter(p=>p.title.toLowerCase().includes(q)||(p.excerpt||'').toLowerCase().includes(q));
+  renderPostsTable(list)
+}
+
+// ── Quill ──
+function initQuill(){
+  if(quill)return;
+  quill=new Quill('#quillEditor',{theme:'snow',placeholder:'Write your post content here…',modules:{toolbar:{container:[[{header:[1,2,3,false]}],['bold','italic','underline','strike'],['blockquote','code-block'],[{list:'ordered'},{list:'bullet'}],['link','image'],[{align:[]}],[{color:[]},{background:[]}],['clean']],handlers:{image:()=>openPicker(true)}}}})
+}
+
+// ── Form ──
+function resetForm(post){
+  document.getElementById('fId').value='';
+  document.getElementById('fTitle').value='';
+  document.getElementById('fSlug').value='';
+  document.getElementById('fExcerpt').value='';
+  document.getElementById('fStatus').value='draft';
+  document.getElementById('fCover').value='';
+  document.getElementById('cvrPrev').style.display='none';
+  document.getElementById('fmT').textContent='New Post';
+  document.getElementById('fmS').textContent='Write a new article';
+  if(quill)quill.setContents([]);
+  editTags=[];renderTagChips();
+  if(!post)return;
+  document.getElementById('fId').value=post.id;
+  document.getElementById('fTitle').value=post.title;
+  document.getElementById('fSlug').value=post.slug;
+  document.getElementById('fExcerpt').value=post.excerpt||'';
+  document.getElementById('fStatus').value=post.status;
+  document.getElementById('fmT').textContent='Edit Post';
+  document.getElementById('fmS').textContent=`Editing: "${post.title}"`;
+  if(post.content&&quill)quill.clipboard.dangerouslyPasteHTML(post.content);
+  editTags=[...(post.tags||[])];renderTagChips();
+  if(post.coverImage){document.getElementById('fCover').value=post.coverImage;document.getElementById('cvrImg').src=post.coverImage;document.getElementById('cvrPrev').style.display='block'}
+}
+
+async function editPost(id){
+  try{const r=await authFetch(API+`?action=post&id=${id}`);const post=await r.json();goTab('new-post');setTimeout(()=>resetForm(post),30)}
+  catch{toast('Failed to load post','er')}
+}
+
+async function deletePost(id){
+  if(!confirm('Delete this post permanently?'))return;
+  await authFetch(API+`?action=post&id=${id}`,{method:'DELETE'});
+  await loadPosts();renderPostsTable();renderDashboard();toast('Post deleted','in')
+}
+
+function autoSlug(){if(!document.getElementById('fId').value)document.getElementById('fSlug').value=slug(document.getElementById('fTitle').value)}
+
+async function savePost(status){
+  const title=document.getElementById('fTitle').value.trim();
+  if(!title){toast('Title is required','er');return}
+  const content=quill?quill.getSemanticHTML():'';
+  if(!content||content==='<p><br></p>'){toast('Content cannot be empty','er');return}
+  const id=document.getElementById('fId').value;
+  const body={title,slug:document.getElementById('fSlug').value||slug(title),content,excerpt:document.getElementById('fExcerpt').value.trim(),status:status||document.getElementById('fStatus').value,tags:editTags,coverImage:document.getElementById('fCover').value};
+  try{
+    const url=id?API+`?action=post&id=${id}`:API+'?action=post';
+    const r=await authFetch(url,{method:id?'PUT':'POST',body:JSON.stringify(body)});
+    const saved=await r.json();
+    if(!r.ok){toast(saved.error||'Save failed','er');return}
+    if(!id)document.getElementById('fId').value=saved.id;
+    await loadPosts();renderDashboard();
+    toast(id?'Post updated ✓':'Post created ✓','ok');
+    if(status==='published')goTab('posts')
+  }catch(e){toast('Save failed: '+e.message,'er')}
+}
+
+// ── Tags ──
+function addTag(e){if(e.key!=='Enter')return;e.preventDefault();const v=document.getElementById('fTagIn').value.trim();if(v&&!editTags.includes(v)){editTags.push(v);renderTagChips()}document.getElementById('fTagIn').value=''}
+function removeTag(t){editTags=editTags.filter(x=>x!==t);renderTagChips()}
+function renderTagChips(){document.getElementById('tagChips').innerHTML=editTags.map(t=>`<span class="tag-c" onclick="removeTag('${esc(t)}')" title="Remove">${esc(t)} ✕</span>`).join('')}
+
+// ── Cover ──
+function clearCover(){document.getElementById('fCover').value='';document.getElementById('cvrPrev').style.display='none'}
+
+// ── Media ──
+function renderMedia(list){
+  const items=list||allMedia;
+  document.getElementById('mCnt').textContent=`${items.length} file${items.length!==1?'s':''}`;
+  const g=document.getElementById('mgrid');
+  if(!items.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--mu)">No media yet. Upload files above.</div>';return}
+  g.innerHTML=items.map(m=>`<div class="mc">
+    ${m.type&&m.type.startsWith('image/')?`<img class="mthumb" src="${esc('../'+m.url)}" alt="${esc(m.name)}" loading="lazy" onerror="this.classList.add('ph');this.outerHTML='<div class=\\'mthumb ph\\'>📄</div>'">`:`<div class="mthumb ph">📄</div>`}
+    <div class="minfo"><div class="mname" title="${esc(m.name)}">${esc(m.name)}</div><div class="msize">${fsz(m.size)}</div></div>
+    <div class="mov">
+      <button class="bi" onclick="copyURL('${esc('../'+m.url)}')" title="Copy URL">🔗</button>
+      <button class="bi dl" onclick="deleteMedia('${m.id}')" title="Delete">🗑</button>
+    </div>
+  </div>`).join('')
+}
+function filterMedia(){const q=document.getElementById('mSearch').value.toLowerCase();renderMedia(q?allMedia.filter(m=>m.name.toLowerCase().includes(q)):null)}
+async function deleteMedia(id){
+  if(!confirm('Delete this file?'))return;
+  await authFetch(API+`?action=media&id=${id}`,{method:'DELETE'});
+  await loadMedia();renderMedia();renderDashboard();toast('File deleted','in')
+}
+function copyURL(url){navigator.clipboard.writeText(location.origin+'/'+url.replace('../','')).then(()=>toast('URL copied!','ok')).catch(()=>toast('Copy failed','er'))}
+
+// ── Upload ──
+function dov(e){e.preventDefault();document.getElementById('dropZ').classList.add('ov')}
+function dol(){document.getElementById('dropZ').classList.remove('ov')}
+function ddp(e){e.preventDefault();dol();handleFiles(e.dataTransfer.files)}
+
+async function handleFiles(files){
+  for(const f of Array.from(files)){await uploadFile(f)}
+  await loadMedia();renderMedia();renderDashboard()
+}
+
+async function uploadFile(file){
+  const pw=document.getElementById('progWrap');
+  const pb=document.getElementById('progBar');
+  pw.style.display='block';pb.style.width='20%';
+  const fd=new FormData();
+  fd.append('file',file);
+  try{
+    const r=await fetch(API+'?action=upload',{method:'POST',headers:{'Authorization':`Bearer ${TOKEN}`},body:fd});
+    pb.style.width='90%';
+    const d=await r.json();
+    if(r.ok){toast(`${file.name} uploaded ✓`,'ok')}
+    else{toast(d.error||'Upload failed','er')}
+  }catch(e){toast('Upload error: '+e.message,'er')}
+  pb.style.width='100%';
+  setTimeout(()=>{pw.style.display='none';pb.style.width='0'},400)
+}
+
+// ── Picker ──
+function openPicker(forEditor){
+  pickerForEditor=forEditor;
+  document.getElementById('pickerTitle').textContent=forEditor?'Insert Image':'Select Cover Image';
+  const imgs=allMedia.filter(m=>m.type&&m.type.startsWith('image/'));
+  const g=document.getElementById('pickerGrid');
+  g.innerHTML=imgs.length
+    ?imgs.map(m=>`<div class="mc" style="cursor:pointer" onclick="selectMedia('${m.id}','${esc('../'+m.url)}')"><img class="mthumb" src="${esc('../'+m.url)}" alt="${esc(m.name)}" loading="lazy"><div class="minfo"><div class="mname">${esc(m.name)}</div></div></div>`).join('')
+    :'<div style="text-align:center;padding:40px;color:var(--mu)">No images uploaded yet.</div>';
+  document.getElementById('pickerModal').classList.add('open')
+}
+function closePicker(){document.getElementById('pickerModal').classList.remove('open')}
+function selectMedia(id,url){
+  if(pickerForEditor&&quill){const r=quill.getSelection(true);quill.insertEmbed(r?r.index:0,'image',url)}
+  else{document.getElementById('fCover').value=id;document.getElementById('cvrImg').src=url;document.getElementById('cvrPrev').style.display='block'}
+  closePicker()
+}
+
+// ── Settings ──
+function loadSettings(){const s=JSON.parse(localStorage.getItem('blog_settings')||'{}');if(s.blogName)document.getElementById('sBlogName').value=s.blogName;if(s.blogDesc)document.getElementById('sBlogDesc').value=s.blogDesc;if(s.author)document.getElementById('sAuthor').value=s.author}
+function saveSettings(){localStorage.setItem('blog_settings',JSON.stringify({blogName:document.getElementById('sBlogName').value,blogDesc:document.getElementById('sBlogDesc').value,author:document.getElementById('sAuthor').value}));toast('Settings saved ✓','ok')}
+function updateStorageInfo(){document.getElementById('setP').textContent=allPosts.length+' posts';document.getElementById('setM').textContent=allMedia.length+' files'}
+async function clearAll(type){
+  if(!confirm(`Delete ALL ${type}? Cannot be undone!`))return;
+  if(type==='posts'){for(const p of allPosts)await authFetch(API+`?action=post&id=${p.id}`,{method:'DELETE'});await loadPosts();renderPostsTable();renderDashboard();toast('All posts deleted','in')}
+  else{for(const m of allMedia)await authFetch(API+`?action=media&id=${m.id}`,{method:'DELETE'});await loadMedia();renderMedia();renderDashboard();toast('All media deleted','in')}
+}
+</script>
+</body>
+</html>
