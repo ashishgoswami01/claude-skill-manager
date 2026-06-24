@@ -12,7 +12,7 @@
 
 <nav class="nav">
   <div class="nav-in">
-    <a href="index.html" class="nav-logo">✍️ <span>My Blog</span></a>
+    <a href="index.html" class="nav-logo">My <span>Blog</span></a>
     <div class="nav-links">
       <a href="index.html">← All Posts</a>
       <a href="admin/" class="nav-btn">Admin ↗</a>
