@@ -1,17 +1,18 @@
 <?php
 require_once __DIR__ . '/config.php';
 
-// ── Dirs ──────────────────────────────────────────────────────────────────────
-define('DATA_DIR',   __DIR__ . '/data/');
-define('UPLOAD_DIR', __DIR__ . '/uploads/');
-define('POSTS_FILE', DATA_DIR . 'posts.json');
-define('MEDIA_FILE', DATA_DIR . 'media.json');
+define('DATA_DIR',      __DIR__ . '/data/');
+define('UPLOAD_DIR',    __DIR__ . '/uploads/');
+define('POSTS_FILE',    DATA_DIR . 'posts.json');
+define('MEDIA_FILE',    DATA_DIR . 'media.json');
+define('SETTINGS_FILE', DATA_DIR . 'settings.json');
+define('PRODUCTS_FILE', DATA_DIR . 'products.json');
+define('REVIEWS_FILE',  DATA_DIR . 'reviews.json');
 
 foreach ([DATA_DIR, UPLOAD_DIR] as $d) {
     if (!is_dir($d)) mkdir($d, 0755, true);
 }
 
-// ── Headers ───────────────────────────────────────────────────────────────────
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -70,6 +71,74 @@ function requireAuth() {
     if (!checkAuth()) err('Unauthorized', 401);
 }
 
+function defaultSettings() {
+    return [
+        'siteName'            => 'My Blog',
+        'heroLabel'           => 'Latest Stories',
+        'heroTitle'           => 'Ideas Worth',
+        'heroTitleAccent'     => 'Sharing.',
+        'heroSubtext'         => 'Explore articles, tutorials, and thoughts on design, technology, and everything in between.',
+        'ctaBtn1Text'         => 'Explore Posts',
+        'ctaBtn1Link'         => '#posts',
+        'ctaBtn2Text'         => 'Contact Us',
+        'ctaBtn2Link'         => '#contact',
+        'showRating'          => true,
+        'ratingValue'         => '4.9',
+        'ratingCount'         => '48',
+        'ratingText'          => 'Google reviews',
+        'servicesLabel'       => 'WHAT WE COVER',
+        'servicesTitle'       => 'Everything you need',
+        'servicesTitleAccent' => 'to stay informed.',
+        'servicesDesc'        => "From technical deep-dives to creative insights \xe2\x80\x94 there\xe2\x80\x99s something for every curious mind.",
+        'services' => [
+            ['id'=>'s1','icon'=>'💻','title'=>'Technology',  'desc'=>'Deep dives into the tools, platforms, and innovations shaping our digital world today.'],
+            ['id'=>'s2','icon'=>'🎨','title'=>'Design',      'desc'=>'Aesthetics, UX principles, and the art of creating beautiful, functional experiences.'],
+            ['id'=>'s3','icon'=>'🚀','title'=>'Business',    'desc'=>'Startups, strategy, growth hacking, and hard-won lessons from the entrepreneurial trenches.'],
+            ['id'=>'s4','icon'=>'📱','title'=>'Development', 'desc'=>'Code tutorials, best practices, architecture patterns, and everything software engineering.'],
+            ['id'=>'s5','icon'=>'🌍','title'=>'Lifestyle',   'desc'=>'Productivity, mindfulness, travel, and practical tips for living with intention and clarity.'],
+            ['id'=>'s6','icon'=>'🔬','title'=>'Science',     'desc'=>'Breaking research, emerging technologies, and the endlessly curious wonders of our universe.'],
+        ],
+        'statsLabel'          => 'WHY READ US',
+        'statsTitle'          => 'Numbers that',
+        'statsTitleAccent'    => 'speak for us.',
+        'stats' => [
+            ['id'=>'t1','number'=>'100+',   'title'=>'Articles Published','desc'=>'A growing library of in-depth, well-researched articles across all topics.'],
+            ['id'=>'t2','number'=>'20+',    'title'=>'Topics Covered',    'desc'=>'From tech and design to science and lifestyle — diverse and always expanding.'],
+            ['id'=>'t3','number'=>'Weekly', 'title'=>'New Posts',         'desc'=>'Fresh content every week — no fillers, no clickbait, just real value.'],
+            ['id'=>'t4','number'=>'Free',   'title'=>'Always Free',       'desc'=>'Every article is completely free to read. No paywalls, no subscriptions needed.'],
+        ],
+        'showProducts'        => true,
+        'productsLabel'       => 'OUR PRODUCTS',
+        'productsTitle'       => 'Top Picks',
+        'productsTitleAccent' => 'for you.',
+        'showReviews'         => true,
+        'reviewsLabel'        => 'TESTIMONIALS',
+        'reviewsTitle'        => 'What our readers',
+        'reviewsTitleAccent'  => 'say.',
+        'aboutLabel'          => 'ABOUT THIS BLOG',
+        'aboutTitle'          => 'Written with',
+        'aboutTitleAccent'    => 'passion.',
+        'aboutText'           => "This blog exists to share ideas that challenge, inspire, and educate. Every post is written with care, backed by research, and designed to give you something real to take away. No noise \xe2\x80\x94 just signal.",
+        'aboutFeatures' => [
+            ['icon'=>'📖','title'=>'In-Depth Articles',  'desc'=>'Long-form content that actually explains things properly — not just surface-level summaries.'],
+            ['icon'=>'🎯','title'=>'Actionable Insights','desc'=>'Every post ends with something you can apply today. Ideas you can act on immediately.'],
+            ['icon'=>'🔄','title'=>'Regular Updates',    'desc'=>'New content published consistently every week — bookmark it and come back often.'],
+            ['icon'=>'💬','title'=>'Community Focused',  'desc'=>'Written for real people with real questions. Your feedback shapes what we write next.'],
+        ],
+        'contactLabel'        => 'GET IN TOUCH',
+        'contactTitle'        => "Let\xe2\x80\x99s",
+        'contactTitleAccent'  => 'connect.',
+        'contactDesc'         => "Have a story idea, want to collaborate, or just want to say hello? We\xe2\x80\x99d love to hear from you.",
+        'email'               => 'hello@myblog.com',
+        'phone'               => '098882 79429',
+        'whatsapp'            => '919888279429',
+        'address'             => 'Amritsar, Punjab, India',
+        'hours'               => 'Mon \xe2\x80\x93 Sat, 9:00 AM \xe2\x80\x93 6:00 PM',
+        'mapUrl'              => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109501.413965848!2d74.77448695!3d31.63400655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391963b6c23d3f79%3A0xf9f66b3d8aa5e982!2sAmritsar%2C%20Punjab!5e0!3m2!1sen!2sin!4v1719000000000!5m2!1sen!2sin',
+        'footerText'          => "\xc2\xa9 2026 My Blog",
+    ];
+}
+
 // ── Router ────────────────────────────────────────────────────────────────────
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
@@ -77,13 +146,16 @@ $id     = preg_replace('/[^a-z0-9_-]/i', '', $_GET['id'] ?? '');
 $body   = json_decode(file_get_contents('php://input'), true) ?? [];
 
 switch ($action) {
-    case 'login':  handleLogin($body);           break;
-    case 'posts':  handlePosts($method, $id, $body); break;
-    case 'post':   handlePosts($method, $id, $body); break;
-    case 'media':  handleMedia($method, $id);    break;
-    case 'upload': handleUpload();               break;
-    case 'file':   serveFile($id);               break;
-    default:       err('Unknown action', 404);
+    case 'login':    handleLogin($body);                  break;
+    case 'posts':    handlePosts($method, $id, $body);    break;
+    case 'post':     handlePosts($method, $id, $body);    break;
+    case 'media':    handleMedia($method, $id);           break;
+    case 'upload':   handleUpload();                      break;
+    case 'file':     serveFile($id);                      break;
+    case 'settings': handleSettings($method, $body);      break;
+    case 'products': handleProducts($method, $id, $body); break;
+    case 'reviews':  handleReviews($method, $id, $body);  break;
+    default:         err('Unknown action', 404);
 }
 
 // ── Login ─────────────────────────────────────────────────────────────────────
@@ -99,7 +171,6 @@ function handleLogin($body) {
 function handlePosts($method, $id, $body) {
     $isAdmin = checkAuth();
 
-    // GET list
     if ($method === 'GET' && !$id) {
         $posts = readJson(POSTS_FILE);
         usort($posts, fn($a,$b) => strcmp($b['createdAt'], $a['createdAt']));
@@ -109,7 +180,6 @@ function handlePosts($method, $id, $body) {
         resp($posts);
     }
 
-    // GET single
     if ($method === 'GET' && $id) {
         $posts = readJson(POSTS_FILE);
         foreach ($posts as $p) {
@@ -120,7 +190,6 @@ function handlePosts($method, $id, $body) {
 
     requireAuth();
 
-    // POST create
     if ($method === 'POST') {
         $title = trim($body['title'] ?? '');
         if (!$title) err('Title is required');
@@ -143,14 +212,13 @@ function handlePosts($method, $id, $body) {
         resp($post, 201);
     }
 
-    // PUT update
     if ($method === 'PUT' && $id) {
         $posts = readJson(POSTS_FILE);
         foreach ($posts as &$p) {
             if ($p['id'] === $id) {
                 $title = trim($body['title'] ?? $p['title']);
                 $p['title']      = $title;
-                $p['slug']       = $body['slug'] ?? ($body['slug'] ?: makeSlug($title));
+                $p['slug']       = $body['slug'] ?? makeSlug($title);
                 $p['content']    = $body['content']    ?? $p['content'];
                 $p['excerpt']    = $body['excerpt']    ?? $p['excerpt'];
                 $p['coverImage'] = $body['coverImage'] ?? $p['coverImage'];
@@ -164,11 +232,183 @@ function handlePosts($method, $id, $body) {
         err('Post not found', 404);
     }
 
-    // DELETE
     if ($method === 'DELETE' && $id) {
         $posts = readJson(POSTS_FILE);
         $posts = array_values(array_filter($posts, fn($p) => $p['id'] !== $id));
         writeJson(POSTS_FILE, $posts);
+        resp(['success' => true]);
+    }
+
+    err('Method not allowed', 405);
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+function handleSettings($method, $body) {
+    if ($method === 'GET') {
+        $saved    = readJson(SETTINGS_FILE);
+        $defaults = defaultSettings();
+        $settings = array_merge($defaults, $saved);
+        foreach (['services','stats','aboutFeatures'] as $key) {
+            if (isset($saved[$key]) && is_array($saved[$key]) && count($saved[$key])) {
+                $settings[$key] = $saved[$key];
+            }
+        }
+        resp($settings);
+    }
+    requireAuth();
+    if ($method === 'POST') {
+        $defaults = defaultSettings();
+        $existing = readJson(SETTINGS_FILE);
+        $merged   = array_merge($defaults, $existing, $body);
+        writeJson(SETTINGS_FILE, $merged);
+        resp($merged);
+    }
+    err('Method not allowed', 405);
+}
+
+// ── Products ──────────────────────────────────────────────────────────────────
+function handleProducts($method, $id, $body) {
+    $isAdmin = checkAuth();
+
+    if ($method === 'GET' && !$id) {
+        $products = readJson(PRODUCTS_FILE);
+        usort($products, fn($a,$b) => strcmp($b['createdAt'] ?? '', $a['createdAt'] ?? ''));
+        if (!$isAdmin) {
+            $products = array_values(array_filter($products, fn($p) => ($p['status'] ?? '') === 'active'));
+        }
+        resp($products);
+    }
+
+    if ($method === 'GET' && $id) {
+        $products = readJson(PRODUCTS_FILE);
+        foreach ($products as $p) {
+            if ($p['id'] === $id || ($p['slug'] ?? '') === $id) resp($p);
+        }
+        err('Product not found', 404);
+    }
+
+    requireAuth();
+
+    if ($method === 'POST') {
+        $name = trim($body['name'] ?? '');
+        if (!$name) err('Name is required');
+        $now = date('c');
+        $product = [
+            'id'          => uid(),
+            'name'        => $name,
+            'slug'        => $body['slug'] ?: makeSlug($name),
+            'shortDesc'   => $body['shortDesc']   ?? '',
+            'description' => $body['description'] ?? '',
+            'price'       => $body['price']       ?? '',
+            'category'    => $body['category']    ?? '',
+            'brand'       => $body['brand']       ?? '',
+            'image'       => $body['image']       ?? '',
+            'features'    => $body['features']    ?? [],
+            'status'      => $body['status']      ?? 'active',
+            'createdAt'   => $now,
+            'updatedAt'   => $now,
+        ];
+        $products   = readJson(PRODUCTS_FILE);
+        $products[] = $product;
+        writeJson(PRODUCTS_FILE, $products);
+        resp($product, 201);
+    }
+
+    if ($method === 'PUT' && $id) {
+        $products = readJson(PRODUCTS_FILE);
+        foreach ($products as &$p) {
+            if ($p['id'] === $id) {
+                $name = trim($body['name'] ?? $p['name']);
+                $p['name']        = $name;
+                $p['slug']        = $body['slug']        ?? makeSlug($name);
+                $p['shortDesc']   = $body['shortDesc']   ?? ($p['shortDesc'] ?? '');
+                $p['description'] = $body['description'] ?? ($p['description'] ?? '');
+                $p['price']       = $body['price']       ?? ($p['price'] ?? '');
+                $p['category']    = $body['category']    ?? ($p['category'] ?? '');
+                $p['brand']       = $body['brand']       ?? ($p['brand'] ?? '');
+                $p['image']       = $body['image']       ?? ($p['image'] ?? '');
+                $p['features']    = $body['features']    ?? ($p['features'] ?? []);
+                $p['status']      = $body['status']      ?? ($p['status'] ?? 'active');
+                $p['updatedAt']   = date('c');
+                writeJson(PRODUCTS_FILE, $products);
+                resp($p);
+            }
+        }
+        err('Product not found', 404);
+    }
+
+    if ($method === 'DELETE' && $id) {
+        $products = readJson(PRODUCTS_FILE);
+        $products = array_values(array_filter($products, fn($p) => $p['id'] !== $id));
+        writeJson(PRODUCTS_FILE, $products);
+        resp(['success' => true]);
+    }
+
+    err('Method not allowed', 405);
+}
+
+// ── Reviews ───────────────────────────────────────────────────────────────────
+function handleReviews($method, $id, $body) {
+    $isAdmin = checkAuth();
+
+    if ($method === 'GET' && !$id) {
+        $reviews = readJson(REVIEWS_FILE);
+        usort($reviews, fn($a,$b) => strcmp($b['createdAt'] ?? '', $a['createdAt'] ?? ''));
+        if (!$isAdmin) {
+            $reviews = array_values(array_filter($reviews, fn($r) => ($r['status'] ?? '') === 'published'));
+        }
+        resp($reviews);
+    }
+
+    if ($method === 'GET' && $id) {
+        $reviews = readJson(REVIEWS_FILE);
+        foreach ($reviews as $r) {
+            if ($r['id'] === $id) resp($r);
+        }
+        err('Review not found', 404);
+    }
+
+    requireAuth();
+
+    if ($method === 'POST') {
+        $name = trim($body['name'] ?? '');
+        if (!$name) err('Name is required');
+        $now = date('c');
+        $review = [
+            'id'        => uid(),
+            'name'      => $name,
+            'location'  => $body['location'] ?? '',
+            'rating'    => min(5, max(1, (int)($body['rating'] ?? 5))),
+            'text'      => $body['text']   ?? '',
+            'status'    => $body['status'] ?? 'published',
+            'createdAt' => $now,
+        ];
+        $reviews   = readJson(REVIEWS_FILE);
+        $reviews[] = $review;
+        writeJson(REVIEWS_FILE, $reviews);
+        resp($review, 201);
+    }
+
+    if ($method === 'PUT' && $id) {
+        $reviews = readJson(REVIEWS_FILE);
+        foreach ($reviews as &$r) {
+            if ($r['id'] === $id) {
+                $r['name']     = trim($body['name']   ?? $r['name']);
+                $r['location'] = $body['location'] ?? ($r['location'] ?? '');
+                $r['rating']   = min(5, max(1, (int)($body['rating'] ?? $r['rating'])));
+                $r['text']     = $body['text']   ?? ($r['text'] ?? '');
+                $r['status']   = $body['status'] ?? ($r['status'] ?? 'published');
+                writeJson(REVIEWS_FILE, $reviews);
+                resp($r);
+            }
+        }
+        err('Review not found', 404);
+    }
+
+    if ($method === 'DELETE' && $id) {
+        $reviews = readJson(REVIEWS_FILE);
+        $reviews = array_values(array_filter($reviews, fn($r) => $r['id'] !== $id));
+        writeJson(REVIEWS_FILE, $reviews);
         resp(['success' => true]);
     }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — Blog CMS</title>
+  <title>Admin — Site CMS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
@@ -18,7 +18,6 @@
   --gu:#10b981;--gug:rgba(16,185,129,.1);
   --ru:#ef4444;--rug:rgba(239,68,68,.1);
   --au:#f59e0b;--aug:rgba(245,158,11,.1);
-  --tu:#0ea5e9;
   --r:10px;--rs:6px;--tr:170ms ease;
   --sw:228px;--th:62px;
   --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
@@ -70,7 +69,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 .sc{background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;transition:transform var(--tr),box-shadow var(--tr);box-shadow:var(--shadow)}
 .sc:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
-.p::before{background:var(--pu)}.g::before{background:var(--gu)}.a::before{background:var(--au)}.b::before{background:var(--bu)}
+.p::before{background:var(--pu)}.g::before{background:var(--gu)}.a::before{background:var(--au)}.b::before{background:var(--bu)}.o::before{background:#f97316}
 .s-ico{font-size:22px;margin-bottom:8px}.s-num{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.5px;color:var(--pu)}.s-lab{font-size:12px;color:var(--mu);margin-top:4px}
 
 /* Card */
@@ -80,7 +79,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-hei
 
 /* Toolbar */
 .tb{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
-.tb-r{display:flex;align-items:center;gap:8px}
+.tb-right{display:flex;align-items:center;gap:8px}
 .si{padding:8px 12px;background:var(--bg2);border:1.5px solid var(--bd);border-radius:var(--rs);color:var(--tx);font-size:13px;outline:none;transition:border-color var(--tr);font-family:inherit;box-shadow:var(--shadow)}
 .si:focus{border-color:var(--pu)}
 
@@ -97,7 +96,7 @@ tbody tr:hover td{background:var(--bg3)}
 
 /* Badges */
 .badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
-.b-pub{background:var(--gug);color:var(--gu)}.b-drft{background:var(--aug);color:var(--au)}
+.b-pub{background:var(--gug);color:var(--gu)}.b-drft{background:var(--aug);color:var(--au)}.b-act{background:var(--gug);color:var(--gu)}.b-inact{background:rgba(100,116,139,.1);color:var(--mu)}
 .tag-c{display:inline-block;padding:2px 8px;border-radius:99px;font-size:10px;background:var(--pug);color:var(--pu);border:1px solid rgba(37,99,235,.2);margin:1px;font-weight:500}
 
 /* Buttons */
@@ -118,9 +117,10 @@ tbody tr:hover td{background:var(--bg3)}
 .fi:focus{border-color:var(--pu);box-shadow:0 0 0 3px var(--pug)}
 textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 .form2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
 
 /* Quill */
-#editorWrap label{font-size:13px;font-weight:600;display:block;margin-bottom:7px;color:var(--tx)}
+#editorWrap label,#prodEditorWrap label{font-size:13px;font-weight:600;display:block;margin-bottom:7px;color:var(--tx)}
 .ql-toolbar.ql-snow{background:var(--bg3);border-color:var(--bd)!important;border-radius:var(--rs) var(--rs) 0 0}
 .ql-container.ql-snow{background:var(--bg2);border-color:var(--bd)!important;border-radius:0 0 var(--rs) var(--rs);font-size:14px}
 .ql-editor{color:var(--tx);font-family:'Inter',sans-serif;line-height:1.7;min-height:240px;padding:16px 18px}
@@ -129,7 +129,7 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 .ql-snow .ql-picker-options{background:var(--bg2)!important;border-color:var(--bd)!important;border-radius:var(--rs)}
 .ql-snow.ql-toolbar button:hover .ql-stroke,.ql-snow.ql-toolbar button.ql-active .ql-stroke{stroke:var(--pu)!important}
 .ql-snow.ql-toolbar button:hover .ql-fill,.ql-snow.ql-toolbar button.ql-active .ql-fill{fill:var(--pu)!important}
-#editorWrap{margin-bottom:18px}
+#editorWrap,#prodEditorWrap{margin-bottom:18px}
 
 /* Post layout */
 .post-layout{display:grid;grid-template-columns:1fr 336px;gap:20px;align-items:start}
@@ -180,15 +180,19 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.ok{border-color:rgba(16,185,129,.4);color:var(--gu)}.toast.er{border-color:rgba(239,68,68,.4);color:var(--ru)}.toast.in{border-color:rgba(37,99,235,.4);color:var(--pu)}
 
-/* Settings */
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+/* Settings rows */
 .srow{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--bdl);gap:16px}
 .srow:last-child{border-bottom:none}
 .si2{flex:1}.sl{font-size:13px;font-weight:600;color:var(--tx)}.sd{font-size:12px;color:var(--mu);margin-top:2px}
 
-@media(max-width:900px){.post-layout{grid-template-columns:1fr}.sg{grid-template-columns:1fr}}
+/* Service / Stat / Feature card editors */
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sub-card{background:var(--bg3);border:1px solid var(--bd);border-radius:var(--rs);padding:14px}
+.sub-card-title{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+
+@media(max-width:900px){.post-layout{grid-template-columns:1fr}.editor-grid{grid-template-columns:1fr}}
 @media(max-width:700px){
-  .sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}.main{margin-left:0}.burger{display:block}.content{padding:16px}.form2{grid-template-columns:1fr}
+  .sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}.main{margin-left:0}.burger{display:block}.content{padding:16px}.form2{grid-template-columns:1fr}.form3{grid-template-columns:1fr}
 }
   </style>
 </head>
@@ -197,9 +201,9 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 <!-- Login -->
 <div id="loginWrap" style="display:flex">
   <div class="lbox">
-    <div class="lico">✍️</div>
-    <h2>Blog Admin</h2>
-    <p>Sign in to manage your blog posts and media</p>
+    <div class="lico">⚙️</div>
+    <h2>Site Admin</h2>
+    <p>Sign in to manage your site content, products and settings</p>
     <input type="text" id="unIn" placeholder="Username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()" />
     <input type="password" id="pwIn" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
     <button onclick="doLogin()">Sign In →</button>
@@ -215,17 +219,22 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 <div id="appWrap" style="display:none;width:100%">
   <aside class="sb" id="sb">
     <div class="sb-top">
-      <div class="sb-ico">✍️</div>
-      <div><div class="sb-n">Blog Admin</div><div class="sb-s">Content Manager</div></div>
+      <div class="sb-ico">⚙️</div>
+      <div><div class="sb-n">Site Admin</div><div class="sb-s">Content Manager</div></div>
     </div>
     <nav class="sb-nav">
       <div class="ni on" data-tab="dashboard"><span class="ni-i">📊</span><span class="ni-l">Dashboard</span></div>
       <div class="ni" data-tab="posts"><span class="ni-i">📝</span><span class="ni-l">All Posts</span><span class="ni-b" id="niCnt">0</span></div>
       <div class="ni" data-tab="new-post"><span class="ni-i">✨</span><span class="ni-l">New Post</span></div>
+      <div class="sep"></div>
+      <div class="ni" data-tab="products"><span class="ni-i">📦</span><span class="ni-l">Products</span><span class="ni-b" id="niProdCnt">0</span></div>
+      <div class="ni" data-tab="new-product"><span class="ni-i">➕</span><span class="ni-l">Add Product</span></div>
+      <div class="sep"></div>
+      <div class="ni" data-tab="reviews"><span class="ni-i">⭐</span><span class="ni-l">Reviews</span><span class="ni-b" id="niRevCnt">0</span></div>
       <div class="ni" data-tab="media"><span class="ni-i">🖼️</span><span class="ni-l">Media Library</span></div>
       <div class="sep"></div>
       <div class="ni" data-tab="settings"><span class="ni-i">⚙️</span><span class="ni-l">Settings</span></div>
-      <div class="ni" onclick="window.open('../index.html','_blank')" style="margin-top:auto"><span class="ni-i">🌐</span><span class="ni-l">View Blog ↗</span></div>
+      <div class="ni" onclick="window.open('../index.html','_blank')" style="margin-top:auto"><span class="ni-i">🌐</span><span class="ni-l">View Site ↗</span></div>
     </nav>
     <div class="sb-bot">Logged in as Admin</div>
   </aside>
@@ -244,23 +253,24 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 
     <div class="content">
 
-      <!-- Dashboard -->
+      <!-- ── Dashboard ─────────────────────────────────────────────────────── -->
       <section class="panel on" id="tab-dashboard">
-        <div class="sh"><h1>Dashboard</h1><p>Blog overview</p></div>
+        <div class="sh"><h1>Dashboard</h1><p>Site overview</p></div>
         <div class="stats">
-          <div class="sc p"><div class="s-ico">📝</div><div class="s-num" id="st-total">—</div><div class="s-lab">Total Posts</div></div>
+          <div class="sc p"><div class="s-ico">📝</div><div class="s-num" id="st-total">—</div><div class="s-lab">Blog Posts</div></div>
           <div class="sc g"><div class="s-ico">✅</div><div class="s-num" id="st-pub">—</div><div class="s-lab">Published</div></div>
-          <div class="sc a"><div class="s-ico">📋</div><div class="s-num" id="st-drft">—</div><div class="s-lab">Drafts</div></div>
+          <div class="sc o"><div class="s-ico">📦</div><div class="s-num" id="st-prod">—</div><div class="s-lab">Products</div></div>
+          <div class="sc a"><div class="s-ico">⭐</div><div class="s-num" id="st-rev">—</div><div class="s-lab">Reviews</div></div>
           <div class="sc b"><div class="s-ico">🖼️</div><div class="s-num" id="st-media">—</div><div class="s-lab">Media Files</div></div>
         </div>
         <div class="card"><div class="ch"><h2>Recent Posts</h2><button class="bg bs" onclick="goTab('posts')">View all →</button></div><div id="recentList"></div></div>
       </section>
 
-      <!-- Posts -->
+      <!-- ── Posts List ─────────────────────────────────────────────────────── -->
       <section class="panel" id="tab-posts">
-        <div class="sh"><h1>All Posts</h1><p>Create, edit and delete posts</p></div>
+        <div class="sh"><h1>All Posts</h1><p>Create, edit and manage blog posts</p></div>
         <div class="tb">
-          <div class="tb-r">
+          <div class="tb-right">
             <input class="si" id="postSearch" placeholder="Search posts…" oninput="filterPosts()" style="width:175px" />
             <select class="si" id="statusF" onchange="filterPosts()"><option value="">All</option><option value="published">Published</option><option value="draft">Draft</option></select>
           </div>
@@ -269,7 +279,7 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
         <div class="tw"><table><thead><tr><th>Title</th><th>Status</th><th>Tags</th><th>Date</th><th>Actions</th></tr></thead><tbody id="postsTb"></tbody></table></div>
       </section>
 
-      <!-- New/Edit Post -->
+      <!-- ── New / Edit Post ────────────────────────────────────────────────── -->
       <section class="panel" id="tab-new-post">
         <div class="sh"><h1 id="fmT">New Post</h1><p id="fmS">Write a new article</p></div>
         <div class="post-layout">
@@ -279,7 +289,7 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
               <div class="cb">
                 <div class="fg"><label>Title <span class="req">*</span></label><input class="fi" type="text" id="fTitle" placeholder="Post title…" oninput="autoSlug()" /></div>
                 <div id="editorWrap"><label>Content <span class="req">*</span></label><div id="quillEditor"></div></div>
-                <div class="fg"><label>Excerpt</label><textarea class="fi" id="fExcerpt" rows="3" placeholder="Short summary for the post list…"></textarea></div>
+                <div class="fg"><label>Excerpt</label><textarea class="fi" id="fExcerpt" rows="3" placeholder="Short summary…"></textarea></div>
               </div>
             </div>
           </div>
@@ -308,18 +318,123 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
               <div class="cb">
                 <div class="cvr-prev" id="cvrPrev"><img id="cvrImg" src="" alt="Cover" /><button class="bg bs" style="margin-top:8px;width:100%" onclick="clearCover()">Remove</button></div>
                 <input type="hidden" id="fCover" />
-                <button class="bg" style="width:100%" onclick="openPicker(false)">🖼️ Choose from Media Library</button>
+                <button class="bg" style="width:100%" onclick="openPicker('post')">🖼️ Choose from Media Library</button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Media -->
+      <!-- ── Products List ──────────────────────────────────────────────────── -->
+      <section class="panel" id="tab-products">
+        <div class="sh"><h1>Products</h1><p>Manage your product and service listings</p></div>
+        <div class="tb">
+          <div class="tb-right">
+            <input class="si" id="prodSearch" placeholder="Search products…" oninput="filterProducts()" style="width:175px" />
+          </div>
+          <button class="bp" onclick="goTab('new-product')">+ Add Product</button>
+        </div>
+        <div class="tw"><table><thead><tr><th>Name</th><th>Category</th><th>Brand</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead><tbody id="prodTb"></tbody></table></div>
+      </section>
+
+      <!-- ── New / Edit Product ─────────────────────────────────────────────── -->
+      <section class="panel" id="tab-new-product">
+        <div class="sh"><h1 id="pfmT">New Product</h1><p id="pfmS">Add a new product or service</p></div>
+        <div class="post-layout">
+          <div>
+            <div class="card">
+              <div class="ch"><h2>Product Info</h2></div>
+              <div class="cb">
+                <div class="fg"><label>Name <span class="req">*</span></label><input class="fi" type="text" id="pfName" placeholder="Product name…" oninput="autoProdSlug()" /></div>
+                <div class="form2">
+                  <div class="fg"><label>Category</label><input class="fi" type="text" id="pfCat" placeholder="e.g. AC Repair, Split AC…" /></div>
+                  <div class="fg"><label>Brand</label><input class="fi" type="text" id="pfBrand" placeholder="e.g. Daikin, LG…" /></div>
+                </div>
+                <div class="fg"><label>Price</label><input class="fi" type="text" id="pfPrice" placeholder="e.g. ₹499 onwards" /></div>
+                <div class="fg"><label>Short Description</label><textarea class="fi" id="pfShortDesc" rows="2" placeholder="Brief one-liner shown in cards…"></textarea></div>
+                <div id="prodEditorWrap"><label>Full Description</label><div id="prodQuillEditor"></div></div>
+                <div class="fg">
+                  <label>Key Features</label>
+                  <textarea class="fi" id="pfFeatures" rows="4" placeholder="One feature per line&#10;e.g. Energy-efficient operation&#10;5 year warranty&#10;Free installation"></textarea>
+                  <small>Enter one feature per line</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sc-col">
+            <div class="card">
+              <div class="ch"><h2>Status</h2></div>
+              <div class="cb">
+                <div class="fg"><label>Status</label><select class="fi" id="pfStatus"><option value="active">Active (Visible)</option><option value="inactive">Inactive (Hidden)</option></select></div>
+                <div class="fg"><label>URL Slug</label><input class="fi" type="text" id="pfSlug" placeholder="product-url-slug" /><small>Auto-generated from name</small></div>
+                <div class="fa">
+                  <button class="bg bs" onclick="saveProd('inactive')">Save Draft</button>
+                  <button class="bp" onclick="saveProd('active')">Publish →</button>
+                </div>
+                <input type="hidden" id="pfId" />
+              </div>
+            </div>
+            <div class="card">
+              <div class="ch"><h2>Product Image</h2></div>
+              <div class="cb">
+                <div class="cvr-prev" id="pcvrPrev"><img id="pcvrImg" src="" alt="Product" /><button class="bg bs" style="margin-top:8px;width:100%" onclick="clearProdCover()">Remove</button></div>
+                <input type="hidden" id="pfImage" />
+                <div class="fg"><label>Image URL</label><input class="fi" type="text" id="pfImageUrl" placeholder="uploads/image.jpg or https://…" oninput="syncProdImageUrl()" /></div>
+                <button class="bg" style="width:100%" onclick="openPicker('product')">🖼️ Choose from Media Library</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Reviews ────────────────────────────────────────────────────────── -->
+      <section class="panel" id="tab-reviews">
+        <div class="sh"><h1>Reviews &amp; Testimonials</h1><p>Manage customer reviews shown on the homepage</p></div>
+        <div class="card" style="margin-bottom:24px">
+          <div class="ch"><h2 id="rvFormTitle">Add Review</h2></div>
+          <div class="cb">
+            <div class="form2">
+              <div class="fg"><label>Customer Name <span class="req">*</span></label><input class="fi" type="text" id="rvName" placeholder="e.g. Rahul Sharma" /></div>
+              <div class="fg"><label>Location</label><input class="fi" type="text" id="rvLocation" placeholder="e.g. Amritsar, Punjab" /></div>
+            </div>
+            <div class="form2">
+              <div class="fg"><label>Rating</label>
+                <select class="fi" id="rvRating">
+                  <option value="5">★★★★★ — 5 stars</option>
+                  <option value="4">★★★★☆ — 4 stars</option>
+                  <option value="3">★★★☆☆ — 3 stars</option>
+                  <option value="2">★★☆☆☆ — 2 stars</option>
+                  <option value="1">★☆☆☆☆ — 1 star</option>
+                </select>
+              </div>
+              <div class="fg"><label>Status</label>
+                <select class="fi" id="rvStatus">
+                  <option value="published">Published (Visible)</option>
+                  <option value="draft">Draft (Hidden)</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg"><label>Review Text</label><textarea class="fi" id="rvText" rows="3" placeholder="Customer's review…"></textarea></div>
+            <div class="fa">
+              <button class="bg bs" onclick="cancelRevEdit()">Cancel</button>
+              <button class="bp" onclick="saveReview()">Save Review</button>
+            </div>
+            <input type="hidden" id="rvId" />
+          </div>
+        </div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Name</th><th>Stars</th><th>Location</th><th>Status</th><th>Preview</th><th>Actions</th></tr></thead>
+            <tbody id="revTb"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Media ──────────────────────────────────────────────────────────── -->
       <section class="panel" id="tab-media">
         <div class="sh"><h1>Media Library</h1><p>Upload and manage images</p></div>
         <div class="drop-z" id="dropZ" onclick="document.getElementById('fileIn').click()" ondragover="dov(event)" ondragleave="dol()" ondrop="ddp(event)">
-          <div class="drop-ico">📤</div><p>Click to upload or drag & drop files here</p><small>JPEG, PNG, GIF, WebP, SVG — max 8 MB each</small>
+          <div class="drop-ico">📤</div><p>Click to upload or drag &amp; drop files here</p><small>JPEG, PNG, GIF, WebP, SVG — max 8 MB each</small>
         </div>
         <input type="file" id="fileIn" accept="image/*,.svg" multiple onchange="handleFiles(this.files)" />
         <div class="prog-wrap" id="progWrap"><div class="prog-bar" id="progBar"></div></div>
@@ -330,44 +445,173 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
         <div class="mgrid" id="mgrid"></div>
       </section>
 
-      <!-- Settings -->
+      <!-- ── Settings ───────────────────────────────────────────────────────── -->
       <section class="panel" id="tab-settings">
-        <div class="sh"><h1>Settings</h1><p>Configure your blog</p></div>
-        <div class="sg">
+        <div class="sh"><h1>Settings</h1><p>Customise every section of your site</p></div>
+        <div style="max-width:900px">
+
+          <!-- General -->
           <div class="card">
-            <div class="ch"><h2>Blog Info</h2></div>
+            <div class="ch"><h2>⚙️ General</h2><button class="bp bs" onclick="saveSettings('general')">Save</button></div>
             <div class="cb">
-              <div class="fg"><label>Blog Name</label><input class="fi" id="sBlogName" /></div>
-              <div class="fg"><label>Description</label><input class="fi" id="sBlogDesc" /></div>
-              <div class="fg"><label>Author</label><input class="fi" id="sAuthor" /></div>
-              <button class="bp" onclick="saveSettings()">Save</button>
+              <div class="form2">
+                <div class="fg"><label>Site Name</label><input class="fi" id="sSiteName" placeholder="My Business" /></div>
+                <div class="fg"><label>Footer Text</label><input class="fi" id="sFooterText" placeholder="© 2026 My Business" /></div>
+              </div>
             </div>
           </div>
+
+          <!-- Hero Section -->
           <div class="card">
-            <div class="ch"><h2>Password</h2></div>
+            <div class="ch"><h2>🏠 Hero Section</h2><button class="bp bs" onclick="saveSettings('hero')">Save</button></div>
             <div class="cb">
-              <p style="font-size:13px;color:var(--mu);line-height:1.7;margin-bottom:14px">To change credentials, edit <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">config.php</code> on your server via FTP and update <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ADMIN_USERNAME</code> and <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">ADMIN_PASSWORD</code>.</p>
-              <div class="fg"><label>API Secret Key</label><p style="font-size:12px;color:var(--mu);margin-top:4px">Also change <code style="background:var(--bg3);padding:2px 6px;border-radius:4px">SECRET_KEY</code> in config.php to something random for security.</p></div>
+              <div class="form2">
+                <div class="fg"><label>Small Label</label><input class="fi" id="sHeroLabel" placeholder="BEST IN CLASS" /></div>
+                <div class="fg"><label>Heading (main)</label><input class="fi" id="sHeroTitle" placeholder="Professional AC" /></div>
+                <div class="fg"><label>Heading Accent</label><input class="fi" id="sHeroTitleAccent" placeholder="Services." /></div>
+                <div class="fg"><label>Show Rating</label>
+                  <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+                    <label class="tog"><input type="checkbox" id="sShowRating" /><span class="tsl"></span></label>
+                    <span style="font-size:13px;color:var(--mu)">Show Google rating badge</span>
+                  </label>
+                </div>
+              </div>
+              <div class="fg"><label>Subtext</label><textarea class="fi" id="sHeroSubtext" rows="2" placeholder="Your trusted partner…"></textarea></div>
+              <div class="form3">
+                <div class="fg"><label>Rating Value</label><input class="fi" id="sRatingValue" placeholder="4.9" /></div>
+                <div class="fg"><label>Rating Count</label><input class="fi" id="sRatingCount" placeholder="48" /></div>
+                <div class="fg"><label>Rating Label</label><input class="fi" id="sRatingText" placeholder="Google reviews" /></div>
+              </div>
+              <div class="form2">
+                <div class="fg"><label>CTA Button 1 Text</label><input class="fi" id="sCtaBtn1Text" placeholder="Get a Quote" /></div>
+                <div class="fg"><label>CTA Button 1 Link</label><input class="fi" id="sCtaBtn1Link" placeholder="#contact" /></div>
+                <div class="fg"><label>CTA Button 2 Text</label><input class="fi" id="sCtaBtn2Text" placeholder="Our Services" /></div>
+                <div class="fg"><label>CTA Button 2 Link</label><input class="fi" id="sCtaBtn2Link" placeholder="#services" /></div>
+              </div>
             </div>
           </div>
+
+          <!-- Services Section -->
           <div class="card">
-            <div class="ch"><h2>Storage Info</h2></div>
-            <div>
-              <div class="srow"><div class="si2"><div class="sl">Total Posts</div></div><span id="setP" style="color:var(--mu);font-size:13px">—</span></div>
-              <div class="srow"><div class="si2"><div class="sl">Media Files</div></div><span id="setM" style="color:var(--mu);font-size:13px">—</span></div>
-              <div class="srow"><div class="si2"><div class="sl">Storage</div><div class="sd">Files in /uploads/ on server</div></div></div>
+            <div class="ch"><h2>🔧 Services / Topics</h2><button class="bp bs" onclick="saveSettings('services')">Save</button></div>
+            <div class="cb">
+              <div class="form2" style="margin-bottom:16px">
+                <div class="fg"><label>Section Label</label><input class="fi" id="sServicesLabel" placeholder="WHAT WE COVER" /></div>
+                <div class="fg"><label>Section Heading</label><input class="fi" id="sServicesTitle" placeholder="Everything you need" /></div>
+                <div class="fg"><label>Heading Accent</label><input class="fi" id="sServicesTitleAccent" placeholder="to stay informed." /></div>
+              </div>
+              <div class="fg" style="margin-bottom:20px"><label>Section Description</label><textarea class="fi" id="sServicesDesc" rows="2" placeholder="Short description…"></textarea></div>
+              <div style="font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Service / Topic Cards</div>
+              <div class="editor-grid" id="servicesEditor"></div>
             </div>
           </div>
+
+          <!-- Stats Section -->
           <div class="card">
-            <div class="ch"><h2>Danger Zone</h2></div>
-            <div>
-              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Posts</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('posts')">Delete</button></div>
-              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Media</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('media')">Delete</button></div>
+            <div class="ch"><h2>📊 Stats Band</h2><button class="bp bs" onclick="saveSettings('stats')">Save</button></div>
+            <div class="cb">
+              <div class="form2" style="margin-bottom:16px">
+                <div class="fg"><label>Section Label</label><input class="fi" id="sStatsLabel" placeholder="WHY CHOOSE US" /></div>
+                <div class="fg"><label>Section Heading</label><input class="fi" id="sStatsTitle" placeholder="Numbers that" /></div>
+                <div class="fg"><label>Heading Accent</label><input class="fi" id="sStatsTitleAccent" placeholder="speak for us." /></div>
+              </div>
+              <div style="font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Stat Cards</div>
+              <div class="editor-grid" id="statsEditor"></div>
             </div>
           </div>
+
+          <!-- Products Section Settings -->
+          <div class="card">
+            <div class="ch"><h2>📦 Products Section</h2><button class="bp bs" onclick="saveSettings('products-section')">Save</button></div>
+            <div class="cb">
+              <div class="srow" style="padding:0 0 16px;border-bottom:1px solid var(--bdl)">
+                <div class="si2"><div class="sl">Show Products Section</div><div class="sd">Display the products grid on the homepage</div></div>
+                <label class="tog"><input type="checkbox" id="sShowProducts" /><span class="tsl"></span></label>
+              </div>
+              <div style="margin-top:16px">
+                <div class="form2">
+                  <div class="fg"><label>Section Label</label><input class="fi" id="sProductsLabel" placeholder="OUR PRODUCTS" /></div>
+                  <div class="fg"><label>Section Heading</label><input class="fi" id="sProductsTitle" placeholder="Top Picks" /></div>
+                  <div class="fg"><label>Heading Accent</label><input class="fi" id="sProductsTitleAccent" placeholder="for you." /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews Section Settings -->
+          <div class="card">
+            <div class="ch"><h2>⭐ Reviews Section</h2><button class="bp bs" onclick="saveSettings('reviews-section')">Save</button></div>
+            <div class="cb">
+              <div class="srow" style="padding:0 0 16px;border-bottom:1px solid var(--bdl)">
+                <div class="si2"><div class="sl">Show Reviews Section</div><div class="sd">Display testimonials on the homepage</div></div>
+                <label class="tog"><input type="checkbox" id="sShowReviews" /><span class="tsl"></span></label>
+              </div>
+              <div style="margin-top:16px">
+                <div class="form2">
+                  <div class="fg"><label>Section Label</label><input class="fi" id="sReviewsLabel" placeholder="TESTIMONIALS" /></div>
+                  <div class="fg"><label>Section Heading</label><input class="fi" id="sReviewsTitle" placeholder="What our readers" /></div>
+                  <div class="fg"><label>Heading Accent</label><input class="fi" id="sReviewsTitleAccent" placeholder="say." /></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- About Section -->
+          <div class="card">
+            <div class="ch"><h2>👤 About Section</h2><button class="bp bs" onclick="saveSettings('about')">Save</button></div>
+            <div class="cb">
+              <div class="form2" style="margin-bottom:16px">
+                <div class="fg"><label>Section Label</label><input class="fi" id="sAboutLabel" placeholder="ABOUT US" /></div>
+                <div class="fg"><label>Section Heading</label><input class="fi" id="sAboutTitle" placeholder="Written with" /></div>
+                <div class="fg"><label>Heading Accent</label><input class="fi" id="sAboutTitleAccent" placeholder="passion." /></div>
+              </div>
+              <div class="fg" style="margin-bottom:20px"><label>About Text</label><textarea class="fi" id="sAboutText" rows="3" placeholder="Describe your business…"></textarea></div>
+              <div style="font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Feature Points (4)</div>
+              <div class="editor-grid" id="featuresEditor"></div>
+            </div>
+          </div>
+
+          <!-- Contact & Map -->
+          <div class="card">
+            <div class="ch"><h2>📞 Contact &amp; Map</h2><button class="bp bs" onclick="saveSettings('contact')">Save</button></div>
+            <div class="cb">
+              <div class="form2" style="margin-bottom:16px">
+                <div class="fg"><label>Section Label</label><input class="fi" id="sContactLabel" placeholder="GET IN TOUCH" /></div>
+                <div class="fg"><label>Section Heading</label><input class="fi" id="sContactTitle" placeholder="Let's" /></div>
+                <div class="fg"><label>Heading Accent</label><input class="fi" id="sContactTitleAccent" placeholder="connect." /></div>
+              </div>
+              <div class="fg" style="margin-bottom:16px"><label>Contact Description</label><textarea class="fi" id="sContactDesc" rows="2" placeholder="Have a question? We'd love to hear from you."></textarea></div>
+              <div class="form2">
+                <div class="fg"><label>Email</label><input class="fi" type="email" id="sEmail" placeholder="hello@yourdomain.com" /></div>
+                <div class="fg"><label>Phone</label><input class="fi" type="text" id="sPhone" placeholder="098882 79429" /></div>
+                <div class="fg"><label>WhatsApp Number</label><input class="fi" type="text" id="sWhatsapp" placeholder="919888279429" /><small>Include country code, no + sign</small></div>
+                <div class="fg"><label>Business Hours</label><input class="fi" type="text" id="sHours" placeholder="Mon – Sat, 9 AM – 6 PM" /></div>
+              </div>
+              <div class="fg" style="margin-bottom:16px"><label>Address</label><textarea class="fi" id="sAddress" rows="2" placeholder="123 Main St, City, State"></textarea></div>
+              <div class="fg">
+                <label>Google Maps Embed URL</label>
+                <textarea class="fi" id="sMapUrl" rows="3" placeholder="https://www.google.com/maps/embed?pb=..."></textarea>
+                <small>Paste the full embed URL from Google Maps → Share → Embed a map → copy the src="…" URL</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="card">
+            <div class="ch"><h2 style="color:var(--ru)">⚠️ Danger Zone</h2></div>
+            <div>
+              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Posts</div><div class="sd">Permanently removes all blog posts</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('posts')">Delete All</button></div>
+              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Media</div><div class="sd">Permanently removes all uploaded images</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('media')">Delete All</button></div>
+              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Products</div><div class="sd">Permanently removes all products</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('products')">Delete All</button></div>
+              <div class="srow"><div class="si2"><div class="sl" style="color:var(--ru)">Delete All Reviews</div><div class="sd">Permanently removes all reviews</div></div><button class="bg bs" style="border-color:rgba(244,63,94,.4);color:var(--ru)" onclick="clearAll('reviews')">Delete All</button></div>
+            </div>
+          </div>
+
+          <div style="padding:4px 0 48px;font-size:13px;color:var(--mu)">Tip: Each card has its own Save button. Use them to save individual sections.</div>
         </div>
       </section>
-    </div>
+
+    </div><!-- /content -->
   </main>
 </div>
 
@@ -386,17 +630,20 @@ textarea.fi{resize:vertical;min-height:80px}select.fi{cursor:pointer}
 <script>
 'use strict';
 const API = '../api.php';
-let TOKEN = '', quill, allPosts = [], allMedia = [], editTags = [], pickerForEditor = false;
+let TOKEN = '', quill, prodQuill;
+let allPosts = [], allMedia = [], allProducts = [], allReviews = [];
+let editTags = [], pickerForContext = '', pickerForEditor = false;
+let editingRevId = '';
+let currentSettings = {};
 
 // ── Helpers ──
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function fmt(iso){try{return new Date(iso).toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})}catch{return ''}}
 function fsz(b){if(!b)return'';if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
-function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 let _tt;
 function toast(msg,type='in'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast ${type} show`;clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),3200)}
-function authFetch(url,opts={}){return fetch(url,{...opts,headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`,  ...(opts.headers||{})}})}
+function authFetch(url,opts={}){return fetch(url,{...opts,headers:{'Content-Type':'application/json','Authorization':`Bearer ${TOKEN}`,...(opts.headers||{})}})}
 
 // ── Auth ──
 function doLogin(){
@@ -428,26 +675,52 @@ function bindNav(){document.querySelectorAll('.ni[data-tab]').forEach(el=>el.add
 function goTab(tab){
   document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('on',n.dataset.tab===tab));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===`tab-${tab}`));
-  document.getElementById('crumb').textContent=tab.replace('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
+  const labels={'dashboard':'Dashboard','posts':'All Posts','new-post':'New Post','products':'Products','new-product':'Add Product','reviews':'Reviews','media':'Media Library','settings':'Settings'};
+  document.getElementById('crumb').textContent=labels[tab]||tab;
   if(tab==='posts')renderPostsTable();
   if(tab==='media')renderMedia();
   if(tab==='dashboard')renderDashboard();
-  if(tab==='new-post')resetForm();
-  if(tab==='settings')updateStorageInfo();
+  if(tab==='new-post')resetPostForm();
+  if(tab==='products')renderProductsTable();
+  if(tab==='new-product')resetProdForm();
+  if(tab==='reviews')renderReviewsTable();
+  if(tab==='settings'){rebuildServicesEditor();rebuildStatsEditor();rebuildFeaturesEditor()}
   document.getElementById('sb').classList.remove('open');
 }
 
-// ── Load ──
-async function loadAll(){await Promise.all([loadPosts(),loadMedia()]);renderDashboard()}
-async function loadPosts(){try{const r=await authFetch(API+'?action=posts');allPosts=await r.json();if(!Array.isArray(allPosts))allPosts=[]}catch{allPosts=[]};document.getElementById('niCnt').textContent=allPosts.length}
-async function loadMedia(){try{const r=await authFetch(API+'?action=media');allMedia=await r.json();if(!Array.isArray(allMedia))allMedia=[]}catch{allMedia=[]}}
+// ── Load all ──
+async function loadAll(){
+  await Promise.all([loadPosts(),loadMedia(),loadProducts(),loadReviews()]);
+  renderDashboard()
+}
+
+async function loadPosts(){
+  try{const r=await authFetch(API+'?action=posts');allPosts=await r.json();if(!Array.isArray(allPosts))allPosts=[]}
+  catch{allPosts=[]}
+  document.getElementById('niCnt').textContent=allPosts.length
+}
+async function loadMedia(){
+  try{const r=await authFetch(API+'?action=media');allMedia=await r.json();if(!Array.isArray(allMedia))allMedia=[]}
+  catch{allMedia=[]}
+}
+async function loadProducts(){
+  try{const r=await authFetch(API+'?action=products');allProducts=await r.json();if(!Array.isArray(allProducts))allProducts=[]}
+  catch{allProducts=[]}
+  document.getElementById('niProdCnt').textContent=allProducts.length
+}
+async function loadReviews(){
+  try{const r=await authFetch(API+'?action=reviews');allReviews=await r.json();if(!Array.isArray(allReviews))allReviews=[]}
+  catch{allReviews=[]}
+  document.getElementById('niRevCnt').textContent=allReviews.length
+}
 
 // ── Dashboard ──
 function renderDashboard(){
   const pub=allPosts.filter(p=>p.status==='published').length;
   document.getElementById('st-total').textContent=allPosts.length;
   document.getElementById('st-pub').textContent=pub;
-  document.getElementById('st-drft').textContent=allPosts.length-pub;
+  document.getElementById('st-prod').textContent=allProducts.length;
+  document.getElementById('st-rev').textContent=allReviews.length;
   document.getElementById('st-media').textContent=allMedia.length;
   const rec=allPosts.slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
   document.getElementById('recentList').innerHTML=rec.length
@@ -483,12 +756,16 @@ function filterPosts(){
 
 // ── Quill ──
 function initQuill(){
-  if(quill)return;
-  quill=new Quill('#quillEditor',{theme:'snow',placeholder:'Write your post content here…',modules:{toolbar:{container:[[{header:[1,2,3,false]}],['bold','italic','underline','strike'],['blockquote','code-block'],[{list:'ordered'},{list:'bullet'}],['link','image'],[{align:[]}],[{color:[]},{background:[]}],['clean']],handlers:{image:()=>openPicker(true)}}}})
+  if(!quill){
+    quill=new Quill('#quillEditor',{theme:'snow',placeholder:'Write your post content here…',modules:{toolbar:{container:[[{header:[1,2,3,false]}],['bold','italic','underline','strike'],['blockquote','code-block'],[{list:'ordered'},{list:'bullet'}],['link','image'],[{align:[]}],[{color:[]},{background:[]}],['clean']],handlers:{image:()=>{pickerForContext='post-editor';pickerForEditor=true;openPicker('post-editor')}}}}})
+  }
+  if(!prodQuill){
+    prodQuill=new Quill('#prodQuillEditor',{theme:'snow',placeholder:'Full product description…',modules:{toolbar:[[{header:[2,3,false]}],['bold','italic','underline'],['blockquote'],[{list:'ordered'},{list:'bullet'}],['link'],['clean']]}})
+  }
 }
 
-// ── Form ──
-function resetForm(post){
+// ── Post Form ──
+function resetPostForm(post){
   document.getElementById('fId').value='';
   document.getElementById('fTitle').value='';
   document.getElementById('fSlug').value='';
@@ -510,11 +787,11 @@ function resetForm(post){
   document.getElementById('fmS').textContent=`Editing: "${post.title}"`;
   if(post.content&&quill)quill.clipboard.dangerouslyPasteHTML(post.content);
   editTags=[...(post.tags||[])];renderTagChips();
-  if(post.coverImage){document.getElementById('fCover').value=post.coverImage;document.getElementById('cvrImg').src=post.coverImage;document.getElementById('cvrPrev').style.display='block'}
+  if(post.coverImage){document.getElementById('fCover').value=post.coverImage;document.getElementById('cvrImg').src='../'+post.coverImage;document.getElementById('cvrPrev').style.display='block'}
 }
 
 async function editPost(id){
-  try{const r=await authFetch(API+`?action=post&id=${id}`);const post=await r.json();goTab('new-post');setTimeout(()=>resetForm(post),30)}
+  try{const r=await authFetch(API+`?action=post&id=${id}`);const post=await r.json();goTab('new-post');setTimeout(()=>resetPostForm(post),30)}
   catch{toast('Failed to load post','er')}
 }
 
@@ -524,7 +801,7 @@ async function deletePost(id){
   await loadPosts();renderPostsTable();renderDashboard();toast('Post deleted','in')
 }
 
-function autoSlug(){if(!document.getElementById('fId').value)document.getElementById('fSlug').value=slug(document.getElementById('fTitle').value)}
+function autoSlug(){if(!document.getElementById('fId').value)document.getElementById('fSlug').value=slugify(document.getElementById('fTitle').value)}
 
 async function savePost(status){
   const title=document.getElementById('fTitle').value.trim();
@@ -532,7 +809,7 @@ async function savePost(status){
   const content=quill?quill.getSemanticHTML():'';
   if(!content||content==='<p><br></p>'){toast('Content cannot be empty','er');return}
   const id=document.getElementById('fId').value;
-  const body={title,slug:document.getElementById('fSlug').value||slug(title),content,excerpt:document.getElementById('fExcerpt').value.trim(),status:status||document.getElementById('fStatus').value,tags:editTags,coverImage:document.getElementById('fCover').value};
+  const body={title,slug:document.getElementById('fSlug').value||slugify(title),content,excerpt:document.getElementById('fExcerpt').value.trim(),status:status||document.getElementById('fStatus').value,tags:editTags,coverImage:document.getElementById('fCover').value};
   try{
     const url=id?API+`?action=post&id=${id}`:API+'?action=post';
     const r=await authFetch(url,{method:id?'PUT':'POST',body:JSON.stringify(body)});
@@ -550,8 +827,205 @@ function addTag(e){if(e.key!=='Enter')return;e.preventDefault();const v=document
 function removeTag(t){editTags=editTags.filter(x=>x!==t);renderTagChips()}
 function renderTagChips(){document.getElementById('tagChips').innerHTML=editTags.map(t=>`<span class="tag-c" onclick="removeTag('${esc(t)}')" title="Remove">${esc(t)} ✕</span>`).join('')}
 
-// ── Cover ──
+// ── Post Cover ──
 function clearCover(){document.getElementById('fCover').value='';document.getElementById('cvrPrev').style.display='none'}
+
+// ── Products Table ──
+function renderProductsTable(list){
+  const prods=(list||allProducts).slice().sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+  const tb=document.getElementById('prodTb');
+  if(!prods.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--mu)">No products yet. <span style="color:var(--pu);cursor:pointer;font-weight:500" onclick="goTab(\'new-product\')">Add your first product →</span></td></tr>';return}
+  tb.innerHTML=prods.map(p=>`<tr>
+    <td><div class="tt">${esc(p.name)}</div><div class="tex">${esc(p.shortDesc||'')}</div></td>
+    <td><span class="tag-c">${esc(p.category||'—')}</span></td>
+    <td style="color:var(--mu);font-size:12px">${esc(p.brand||'—')}</td>
+    <td style="font-size:13px;color:var(--pu);font-weight:600">${esc(p.price||'—')}</td>
+    <td><span class="badge ${p.status==='active'?'b-act':'b-inact'}">${p.status||'inactive'}</span></td>
+    <td><div style="display:flex;gap:4px">
+      <button class="bi ed" onclick="editProduct('${p.id}')" title="Edit">✏️</button>
+      <button class="bi dl" onclick="deleteProduct('${p.id}')" title="Delete">🗑</button>
+    </div></td>
+  </tr>`).join('')
+}
+function filterProducts(){
+  const q=(document.getElementById('prodSearch').value||'').toLowerCase();
+  renderProductsTable(q?allProducts.filter(p=>p.name.toLowerCase().includes(q)||(p.category||'').toLowerCase().includes(q)):null)
+}
+
+// ── Product Form ──
+function resetProdForm(prod){
+  document.getElementById('pfId').value='';
+  document.getElementById('pfName').value='';
+  document.getElementById('pfSlug').value='';
+  document.getElementById('pfShortDesc').value='';
+  document.getElementById('pfCat').value='';
+  document.getElementById('pfBrand').value='';
+  document.getElementById('pfPrice').value='';
+  document.getElementById('pfFeatures').value='';
+  document.getElementById('pfStatus').value='active';
+  document.getElementById('pfImage').value='';
+  document.getElementById('pfImageUrl').value='';
+  document.getElementById('pcvrPrev').style.display='none';
+  document.getElementById('pfmT').textContent='New Product';
+  document.getElementById('pfmS').textContent='Add a new product or service';
+  if(prodQuill)prodQuill.setContents([]);
+  if(!prod)return;
+  document.getElementById('pfId').value=prod.id;
+  document.getElementById('pfName').value=prod.name||'';
+  document.getElementById('pfSlug').value=prod.slug||'';
+  document.getElementById('pfShortDesc').value=prod.shortDesc||'';
+  document.getElementById('pfCat').value=prod.category||'';
+  document.getElementById('pfBrand').value=prod.brand||'';
+  document.getElementById('pfPrice').value=prod.price||'';
+  document.getElementById('pfFeatures').value=Array.isArray(prod.features)?prod.features.join('\n'):'';
+  document.getElementById('pfStatus').value=prod.status||'active';
+  document.getElementById('pfmT').textContent='Edit Product';
+  document.getElementById('pfmS').textContent=`Editing: "${prod.name}"`;
+  if(prod.description&&prodQuill)prodQuill.clipboard.dangerouslyPasteHTML(prod.description);
+  if(prod.image){
+    document.getElementById('pfImage').value=prod.image;
+    document.getElementById('pfImageUrl').value=prod.image;
+    document.getElementById('pcvrImg').src=prod.image.startsWith('http')?prod.image:'../'+prod.image;
+    document.getElementById('pcvrPrev').style.display='block'
+  }
+}
+
+function editProduct(id){
+  const prod=allProducts.find(p=>p.id===id);
+  if(!prod){toast('Product not found','er');return}
+  goTab('new-product');
+  setTimeout(()=>resetProdForm(prod),30)
+}
+
+async function deleteProduct(id){
+  if(!confirm('Delete this product permanently?'))return;
+  const r=await authFetch(API+`?action=products&id=${id}`,{method:'DELETE'});
+  const d=await r.json();
+  if(!r.ok){toast(d.error||'Delete failed','er');return}
+  await loadProducts();renderProductsTable();renderDashboard();toast('Product deleted','in')
+}
+
+function autoProdSlug(){if(!document.getElementById('pfId').value)document.getElementById('pfSlug').value=slugify(document.getElementById('pfName').value)}
+
+function syncProdImageUrl(){
+  const url=document.getElementById('pfImageUrl').value.trim();
+  document.getElementById('pfImage').value=url;
+  if(url){
+    document.getElementById('pcvrImg').src=url.startsWith('http')?url:'../'+url;
+    document.getElementById('pcvrPrev').style.display='block'
+  }else{
+    document.getElementById('pcvrPrev').style.display='none'
+  }
+}
+
+async function saveProd(status){
+  const name=document.getElementById('pfName').value.trim();
+  if(!name){toast('Product name is required','er');return}
+  const id=document.getElementById('pfId').value;
+  const description=prodQuill?prodQuill.getSemanticHTML():'';
+  const featuresRaw=document.getElementById('pfFeatures').value.trim();
+  const features=featuresRaw?featuresRaw.split('\n').map(f=>f.trim()).filter(Boolean):[];
+  const body={
+    name,
+    slug:document.getElementById('pfSlug').value||slugify(name),
+    shortDesc:document.getElementById('pfShortDesc').value.trim(),
+    description:description==='<p><br></p>'?'':description,
+    category:document.getElementById('pfCat').value.trim(),
+    brand:document.getElementById('pfBrand').value.trim(),
+    price:document.getElementById('pfPrice').value.trim(),
+    image:document.getElementById('pfImage').value.trim(),
+    features,
+    status:status||document.getElementById('pfStatus').value,
+  };
+  try{
+    const url=id?API+`?action=products&id=${id}`:API+'?action=products';
+    const r=await authFetch(url,{method:id?'PUT':'POST',body:JSON.stringify(body)});
+    const saved=await r.json();
+    if(!r.ok){toast(saved.error||'Save failed','er');return}
+    if(!id)document.getElementById('pfId').value=saved.id;
+    await loadProducts();renderDashboard();
+    toast(id?'Product updated ✓':'Product created ✓','ok');
+    if(status==='active')goTab('products')
+  }catch(e){toast('Save failed: '+e.message,'er')}
+}
+
+function clearProdCover(){
+  document.getElementById('pfImage').value='';
+  document.getElementById('pfImageUrl').value='';
+  document.getElementById('pcvrPrev').style.display='none'
+}
+
+// ── Reviews Table ──
+function renderReviewsTable(){
+  const tb=document.getElementById('revTb');
+  if(!allReviews.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--mu)">No reviews yet. Add your first review above.</td></tr>';return}
+  tb.innerHTML=allReviews.map(r=>`<tr>
+    <td><div class="tt">${esc(r.name)}</div></td>
+    <td><span style="color:#f59e0b;font-size:15px">${'★'.repeat(r.rating||5)}</span></td>
+    <td style="font-size:12px;color:var(--mu)">${esc(r.location||'—')}</td>
+    <td><span class="badge b-${r.status==='published'?'pub':'drft'}">${r.status||'published'}</span></td>
+    <td><div class="tex" style="max-width:220px">${esc((r.text||'').slice(0,60)+(r.text&&r.text.length>60?'…':''))}</div></td>
+    <td><div style="display:flex;gap:4px">
+      <button class="bi ed" onclick="editReview('${r.id}')" title="Edit">✏️</button>
+      <button class="bi dl" onclick="deleteReview('${r.id}')" title="Delete">🗑</button>
+    </div></td>
+  </tr>`).join('')
+}
+
+function editReview(id){
+  const r=allReviews.find(x=>x.id===id);
+  if(!r)return;
+  editingRevId=id;
+  document.getElementById('rvId').value=id;
+  document.getElementById('rvName').value=r.name||'';
+  document.getElementById('rvLocation').value=r.location||'';
+  document.getElementById('rvRating').value=String(r.rating||5);
+  document.getElementById('rvStatus').value=r.status||'published';
+  document.getElementById('rvText').value=r.text||'';
+  document.getElementById('rvFormTitle').textContent='Edit Review';
+  document.getElementById('rvName').scrollIntoView({behavior:'smooth',block:'center'})
+}
+
+function cancelRevEdit(){
+  editingRevId='';
+  document.getElementById('rvId').value='';
+  document.getElementById('rvName').value='';
+  document.getElementById('rvLocation').value='';
+  document.getElementById('rvRating').value='5';
+  document.getElementById('rvStatus').value='published';
+  document.getElementById('rvText').value='';
+  document.getElementById('rvFormTitle').textContent='Add Review'
+}
+
+async function saveReview(){
+  const name=document.getElementById('rvName').value.trim();
+  if(!name){toast('Name is required','er');return}
+  const id=document.getElementById('rvId').value;
+  const body={
+    name,
+    location:document.getElementById('rvLocation').value.trim(),
+    rating:parseInt(document.getElementById('rvRating').value)||5,
+    text:document.getElementById('rvText').value.trim(),
+    status:document.getElementById('rvStatus').value||'published',
+  };
+  try{
+    const url=id?API+`?action=reviews&id=${id}`:API+'?action=reviews';
+    const r=await authFetch(url,{method:id?'PUT':'POST',body:JSON.stringify(body)});
+    const saved=await r.json();
+    if(!r.ok){toast(saved.error||'Save failed','er');return}
+    await loadReviews();renderReviewsTable();
+    cancelRevEdit();
+    toast(id?'Review updated ✓':'Review added ✓','ok')
+  }catch(e){toast('Save failed: '+e.message,'er')}
+}
+
+async function deleteReview(id){
+  if(!confirm('Delete this review permanently?'))return;
+  const r=await authFetch(API+`?action=reviews&id=${id}`,{method:'DELETE'});
+  const d=await r.json();
+  if(!r.ok){toast(d.error||'Delete failed','er');return}
+  await loadReviews();renderReviewsTable();renderDashboard();toast('Review deleted','in')
+}
 
 // ── Media ──
 function renderMedia(list){
@@ -560,7 +1034,7 @@ function renderMedia(list){
   const g=document.getElementById('mgrid');
   if(!items.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--mu)">No media yet. Upload files above.</div>';return}
   g.innerHTML=items.map(m=>`<div class="mc">
-    ${m.type&&m.type.startsWith('image/')?`<img class="mthumb" src="${esc('../'+m.url)}" alt="${esc(m.name)}" loading="lazy" onerror="this.classList.add('ph');this.outerHTML='<div class=\\'mthumb ph\\'>📄</div>'">`:`<div class="mthumb ph">📄</div>`}
+    ${m.type&&m.type.startsWith('image/')?`<img class="mthumb" src="${esc('../'+m.url)}" alt="${esc(m.name)}" loading="lazy">`:`<div class="mthumb ph">📄</div>`}
     <div class="minfo"><div class="mname" title="${esc(m.name)}">${esc(m.name)}</div><div class="msize">${fsz(m.size)}</div></div>
     <div class="mov">
       <button class="bi" onclick="copyURL('${esc('../'+m.url)}')" title="Copy URL">🔗</button>
@@ -574,61 +1048,300 @@ async function deleteMedia(id){
   await authFetch(API+`?action=media&id=${id}`,{method:'DELETE'});
   await loadMedia();renderMedia();renderDashboard();toast('File deleted','in')
 }
-function copyURL(url){navigator.clipboard.writeText(location.origin+'/'+url.replace('../','')).then(()=>toast('URL copied!','ok')).catch(()=>toast('Copy failed','er'))}
+function copyURL(url){navigator.clipboard.writeText(location.origin+url.replace('..','')).then(()=>toast('URL copied!','ok')).catch(()=>toast('Copy failed','er'))}
 
 // ── Upload ──
 function dov(e){e.preventDefault();document.getElementById('dropZ').classList.add('ov')}
 function dol(){document.getElementById('dropZ').classList.remove('ov')}
 function ddp(e){e.preventDefault();dol();handleFiles(e.dataTransfer.files)}
-
-async function handleFiles(files){
-  for(const f of Array.from(files)){await uploadFile(f)}
-  await loadMedia();renderMedia();renderDashboard()
-}
-
+async function handleFiles(files){for(const f of Array.from(files)){await uploadFile(f)}await loadMedia();renderMedia();renderDashboard()}
 async function uploadFile(file){
-  const pw=document.getElementById('progWrap');
-  const pb=document.getElementById('progBar');
+  const pw=document.getElementById('progWrap');const pb=document.getElementById('progBar');
   pw.style.display='block';pb.style.width='20%';
-  const fd=new FormData();
-  fd.append('file',file);
+  const fd=new FormData();fd.append('file',file);
   try{
     const r=await fetch(API+'?action=upload',{method:'POST',headers:{'Authorization':`Bearer ${TOKEN}`},body:fd});
-    pb.style.width='90%';
-    const d=await r.json();
-    if(r.ok){toast(`${file.name} uploaded ✓`,'ok')}
-    else{toast(d.error||'Upload failed','er')}
+    pb.style.width='90%';const d=await r.json();
+    if(r.ok){toast(`${file.name} uploaded ✓`,'ok')}else{toast(d.error||'Upload failed','er')}
   }catch(e){toast('Upload error: '+e.message,'er')}
   pb.style.width='100%';
   setTimeout(()=>{pw.style.display='none';pb.style.width='0'},400)
 }
 
 // ── Picker ──
-function openPicker(forEditor){
-  pickerForEditor=forEditor;
-  document.getElementById('pickerTitle').textContent=forEditor?'Insert Image':'Select Cover Image';
+function openPicker(ctx){
+  pickerForContext=ctx;
+  pickerForEditor=(ctx==='post-editor');
+  document.getElementById('pickerTitle').textContent=ctx==='post-editor'?'Insert Image':'Select Image';
   const imgs=allMedia.filter(m=>m.type&&m.type.startsWith('image/'));
   const g=document.getElementById('pickerGrid');
   g.innerHTML=imgs.length
-    ?imgs.map(m=>`<div class="mc" style="cursor:pointer" onclick="selectMedia('${m.id}','${esc('../'+m.url)}')"><img class="mthumb" src="${esc('../'+m.url)}" alt="${esc(m.name)}" loading="lazy"><div class="minfo"><div class="mname">${esc(m.name)}</div></div></div>`).join('')
-    :'<div style="text-align:center;padding:40px;color:var(--mu)">No images uploaded yet.</div>';
+    ?imgs.map(m=>`<div class="mc" style="cursor:pointer" onclick="selectMedia('${esc(m.url)}')"><img class="mthumb" src="${esc('../'+m.url)}" alt="${esc(m.name)}" loading="lazy"><div class="minfo"><div class="mname">${esc(m.name)}</div></div></div>`).join('')
+    :'<div style="text-align:center;padding:40px;color:var(--mu)">No images uploaded yet.<br><br><button class="bg" onclick="closePicker();goTab(\'media\')">Go to Media Library</button></div>';
   document.getElementById('pickerModal').classList.add('open')
 }
 function closePicker(){document.getElementById('pickerModal').classList.remove('open')}
-function selectMedia(id,url){
-  if(pickerForEditor&&quill){const r=quill.getSelection(true);quill.insertEmbed(r?r.index:0,'image',url)}
-  else{document.getElementById('fCover').value=id;document.getElementById('cvrImg').src=url;document.getElementById('cvrPrev').style.display='block'}
+function selectMedia(url){
+  if(pickerForEditor&&quill){
+    const r=quill.getSelection(true);quill.insertEmbed(r?r.index:0,'image','../'+url)
+  } else if(pickerForContext==='product'){
+    document.getElementById('pfImage').value=url;
+    document.getElementById('pfImageUrl').value=url;
+    document.getElementById('pcvrImg').src='../'+url;
+    document.getElementById('pcvrPrev').style.display='block'
+  } else {
+    document.getElementById('fCover').value=url;
+    document.getElementById('cvrImg').src='../'+url;
+    document.getElementById('cvrPrev').style.display='block'
+  }
   closePicker()
 }
 
-// ── Settings ──
-function loadSettings(){const s=JSON.parse(localStorage.getItem('blog_settings')||'{}');if(s.blogName)document.getElementById('sBlogName').value=s.blogName;if(s.blogDesc)document.getElementById('sBlogDesc').value=s.blogDesc;if(s.author)document.getElementById('sAuthor').value=s.author}
-function saveSettings(){localStorage.setItem('blog_settings',JSON.stringify({blogName:document.getElementById('sBlogName').value,blogDesc:document.getElementById('sBlogDesc').value,author:document.getElementById('sAuthor').value}));toast('Settings saved ✓','ok')}
-function updateStorageInfo(){document.getElementById('setP').textContent=allPosts.length+' posts';document.getElementById('setM').textContent=allMedia.length+' files'}
+// ── Settings: Load ──
+async function loadSettings(){
+  try{
+    const r=await fetch(API+'?action=settings');
+    const s=await r.json();
+    if(s.error)return;
+    currentSettings=s;
+    populateSettingsForm(s)
+  }catch(e){}
+}
+
+function populateSettingsForm(s){
+  const sv=(id,val)=>{const el=document.getElementById(id);if(el&&val!==undefined&&val!==null)el.value=val};
+  const sc=(id,val)=>{const el=document.getElementById(id);if(el)el.checked=!!val};
+
+  // General
+  sv('sSiteName',s.siteName);
+  sv('sFooterText',s.footerText);
+
+  // Hero
+  sv('sHeroLabel',s.heroLabel);
+  sv('sHeroTitle',s.heroTitle);
+  sv('sHeroTitleAccent',s.heroTitleAccent);
+  sv('sHeroSubtext',s.heroSubtext);
+  sc('sShowRating',s.showRating!==false);
+  sv('sRatingValue',s.ratingValue);
+  sv('sRatingCount',s.ratingCount);
+  sv('sRatingText',s.ratingText);
+  sv('sCtaBtn1Text',s.ctaBtn1Text);
+  sv('sCtaBtn1Link',s.ctaBtn1Link);
+  sv('sCtaBtn2Text',s.ctaBtn2Text);
+  sv('sCtaBtn2Link',s.ctaBtn2Link);
+
+  // Services
+  sv('sServicesLabel',s.servicesLabel);
+  sv('sServicesTitle',s.servicesTitle);
+  sv('sServicesTitleAccent',s.servicesTitleAccent);
+  sv('sServicesDesc',s.servicesDesc);
+
+  // Stats
+  sv('sStatsLabel',s.statsLabel);
+  sv('sStatsTitle',s.statsTitle);
+  sv('sStatsTitleAccent',s.statsTitleAccent);
+
+  // Products section
+  sc('sShowProducts',s.showProducts!==false);
+  sv('sProductsLabel',s.productsLabel);
+  sv('sProductsTitle',s.productsTitle);
+  sv('sProductsTitleAccent',s.productsTitleAccent);
+
+  // Reviews section
+  sc('sShowReviews',s.showReviews!==false);
+  sv('sReviewsLabel',s.reviewsLabel);
+  sv('sReviewsTitle',s.reviewsTitle);
+  sv('sReviewsTitleAccent',s.reviewsTitleAccent);
+
+  // About
+  sv('sAboutLabel',s.aboutLabel);
+  sv('sAboutTitle',s.aboutTitle);
+  sv('sAboutTitleAccent',s.aboutTitleAccent);
+  sv('sAboutText',s.aboutText);
+
+  // Contact
+  sv('sContactLabel',s.contactLabel);
+  sv('sContactTitle',s.contactTitle);
+  sv('sContactTitleAccent',s.contactTitleAccent);
+  sv('sContactDesc',s.contactDesc);
+  sv('sEmail',s.email);
+  sv('sPhone',s.phone);
+  sv('sWhatsapp',s.whatsapp);
+  sv('sHours',s.hours);
+  sv('sAddress',s.address);
+  sv('sMapUrl',s.mapUrl);
+}
+
+// ── Settings: Dynamic editors ──
+function rebuildServicesEditor(){
+  const services=currentSettings.services||Array(6).fill({icon:'',title:'',desc:''});
+  const el=document.getElementById('servicesEditor');
+  if(!el)return;
+  el.innerHTML=services.map((s,i)=>`
+    <div class="sub-card">
+      <div class="sub-card-title">Card ${i+1}</div>
+      <div class="fg"><label>Icon (emoji)</label><input class="fi" id="svcIcon${i}" value="${esc(s.icon||'')}" placeholder="💻" style="font-size:20px;width:70px" /></div>
+      <div class="fg"><label>Title</label><input class="fi" id="svcTitle${i}" value="${esc(s.title||'')}" placeholder="Service name" /></div>
+      <div class="fg"><label>Description</label><textarea class="fi" id="svcDesc${i}" rows="2" placeholder="Short description…">${esc(s.desc||'')}</textarea></div>
+    </div>
+  `).join('')
+}
+
+function rebuildStatsEditor(){
+  const stats=currentSettings.stats||Array(4).fill({number:'',title:'',desc:''});
+  const el=document.getElementById('statsEditor');
+  if(!el)return;
+  el.innerHTML=stats.map((s,i)=>`
+    <div class="sub-card">
+      <div class="sub-card-title">Stat ${i+1}</div>
+      <div class="fg"><label>Number / Value</label><input class="fi" id="stNum${i}" value="${esc(s.number||'')}" placeholder="10+" /></div>
+      <div class="fg"><label>Title</label><input class="fi" id="stTitle${i}" value="${esc(s.title||'')}" placeholder="Years Experience" /></div>
+      <div class="fg"><label>Description</label><textarea class="fi" id="stDesc${i}" rows="2" placeholder="Supporting text…">${esc(s.desc||'')}</textarea></div>
+    </div>
+  `).join('')
+}
+
+function rebuildFeaturesEditor(){
+  const features=currentSettings.aboutFeatures||Array(4).fill({icon:'',title:'',desc:''});
+  const el=document.getElementById('featuresEditor');
+  if(!el)return;
+  el.innerHTML=features.map((f,i)=>`
+    <div class="sub-card">
+      <div class="sub-card-title">Feature ${i+1}</div>
+      <div class="fg"><label>Icon (emoji)</label><input class="fi" id="featIcon${i}" value="${esc(f.icon||'')}" placeholder="✅" style="font-size:20px;width:70px" /></div>
+      <div class="fg"><label>Title</label><input class="fi" id="featTitle${i}" value="${esc(f.title||'')}" placeholder="Feature name" /></div>
+      <div class="fg"><label>Description</label><textarea class="fi" id="featDesc${i}" rows="2" placeholder="Brief description…">${esc(f.desc||'')}</textarea></div>
+    </div>
+  `).join('')
+}
+
+// ── Settings: Save ──
+async function saveSettings(section){
+  let patch={};
+
+  if(section==='general'){
+    patch={siteName:document.getElementById('sSiteName').value.trim(),footerText:document.getElementById('sFooterText').value.trim()}
+  }
+  else if(section==='hero'){
+    patch={
+      heroLabel:document.getElementById('sHeroLabel').value.trim(),
+      heroTitle:document.getElementById('sHeroTitle').value.trim(),
+      heroTitleAccent:document.getElementById('sHeroTitleAccent').value.trim(),
+      heroSubtext:document.getElementById('sHeroSubtext').value.trim(),
+      showRating:document.getElementById('sShowRating').checked,
+      ratingValue:document.getElementById('sRatingValue').value.trim(),
+      ratingCount:document.getElementById('sRatingCount').value.trim(),
+      ratingText:document.getElementById('sRatingText').value.trim(),
+      ctaBtn1Text:document.getElementById('sCtaBtn1Text').value.trim(),
+      ctaBtn1Link:document.getElementById('sCtaBtn1Link').value.trim(),
+      ctaBtn2Text:document.getElementById('sCtaBtn2Text').value.trim(),
+      ctaBtn2Link:document.getElementById('sCtaBtn2Link').value.trim(),
+    }
+  }
+  else if(section==='services'){
+    const svcs=[];
+    const count=(currentSettings.services||[]).length||6;
+    for(let i=0;i<count;i++){
+      const icon=document.getElementById('svcIcon'+i);
+      const title=document.getElementById('svcTitle'+i);
+      const desc=document.getElementById('svcDesc'+i);
+      if(icon)svcs.push({id:'s'+(i+1),icon:icon.value.trim(),title:(title?title.value.trim():''),desc:(desc?desc.value.trim():'')})
+    }
+    patch={
+      servicesLabel:document.getElementById('sServicesLabel').value.trim(),
+      servicesTitle:document.getElementById('sServicesTitle').value.trim(),
+      servicesTitleAccent:document.getElementById('sServicesTitleAccent').value.trim(),
+      servicesDesc:document.getElementById('sServicesDesc').value.trim(),
+      services:svcs,
+    }
+  }
+  else if(section==='stats'){
+    const stats=[];
+    const count=(currentSettings.stats||[]).length||4;
+    for(let i=0;i<count;i++){
+      const num=document.getElementById('stNum'+i);
+      const title=document.getElementById('stTitle'+i);
+      const desc=document.getElementById('stDesc'+i);
+      if(num)stats.push({id:'t'+(i+1),number:num.value.trim(),title:(title?title.value.trim():''),desc:(desc?desc.value.trim():'')})
+    }
+    patch={
+      statsLabel:document.getElementById('sStatsLabel').value.trim(),
+      statsTitle:document.getElementById('sStatsTitle').value.trim(),
+      statsTitleAccent:document.getElementById('sStatsTitleAccent').value.trim(),
+      stats,
+    }
+  }
+  else if(section==='products-section'){
+    patch={
+      showProducts:document.getElementById('sShowProducts').checked,
+      productsLabel:document.getElementById('sProductsLabel').value.trim(),
+      productsTitle:document.getElementById('sProductsTitle').value.trim(),
+      productsTitleAccent:document.getElementById('sProductsTitleAccent').value.trim(),
+    }
+  }
+  else if(section==='reviews-section'){
+    patch={
+      showReviews:document.getElementById('sShowReviews').checked,
+      reviewsLabel:document.getElementById('sReviewsLabel').value.trim(),
+      reviewsTitle:document.getElementById('sReviewsTitle').value.trim(),
+      reviewsTitleAccent:document.getElementById('sReviewsTitleAccent').value.trim(),
+    }
+  }
+  else if(section==='about'){
+    const feats=[];
+    const count=(currentSettings.aboutFeatures||[]).length||4;
+    for(let i=0;i<count;i++){
+      const icon=document.getElementById('featIcon'+i);
+      const title=document.getElementById('featTitle'+i);
+      const desc=document.getElementById('featDesc'+i);
+      if(icon)feats.push({icon:icon.value.trim(),title:(title?title.value.trim():''),desc:(desc?desc.value.trim():'')})
+    }
+    patch={
+      aboutLabel:document.getElementById('sAboutLabel').value.trim(),
+      aboutTitle:document.getElementById('sAboutTitle').value.trim(),
+      aboutTitleAccent:document.getElementById('sAboutTitleAccent').value.trim(),
+      aboutText:document.getElementById('sAboutText').value.trim(),
+      aboutFeatures:feats,
+    }
+  }
+  else if(section==='contact'){
+    patch={
+      contactLabel:document.getElementById('sContactLabel').value.trim(),
+      contactTitle:document.getElementById('sContactTitle').value.trim(),
+      contactTitleAccent:document.getElementById('sContactTitleAccent').value.trim(),
+      contactDesc:document.getElementById('sContactDesc').value.trim(),
+      email:document.getElementById('sEmail').value.trim(),
+      phone:document.getElementById('sPhone').value.trim(),
+      whatsapp:document.getElementById('sWhatsapp').value.trim(),
+      hours:document.getElementById('sHours').value.trim(),
+      address:document.getElementById('sAddress').value.trim(),
+      mapUrl:document.getElementById('sMapUrl').value.trim(),
+    }
+  }
+
+  // Merge with existing settings and POST
+  const body=Object.assign({},currentSettings,patch);
+  try{
+    const r=await authFetch(API+'?action=settings',{method:'POST',body:JSON.stringify(body)});
+    const d=await r.json();
+    if(!r.ok){toast(d.error||'Save failed','er');return}
+    currentSettings=d;
+    toast('Settings saved ✓','ok')
+  }catch(e){toast('Save failed: '+e.message,'er')}
+}
+
 async function clearAll(type){
-  if(!confirm(`Delete ALL ${type}? Cannot be undone!`))return;
+  const msgs={
+    posts:'Delete ALL posts? This cannot be undone!',
+    media:'Delete ALL media files? This cannot be undone!',
+    products:'Delete ALL products? This cannot be undone!',
+    reviews:'Delete ALL reviews? This cannot be undone!'
+  };
+  if(!confirm(msgs[type]||'Are you sure?'))return;
   if(type==='posts'){for(const p of allPosts)await authFetch(API+`?action=post&id=${p.id}`,{method:'DELETE'});await loadPosts();renderPostsTable();renderDashboard();toast('All posts deleted','in')}
-  else{for(const m of allMedia)await authFetch(API+`?action=media&id=${m.id}`,{method:'DELETE'});await loadMedia();renderMedia();renderDashboard();toast('All media deleted','in')}
+  else if(type==='media'){for(const m of allMedia)await authFetch(API+`?action=media&id=${m.id}`,{method:'DELETE'});await loadMedia();renderMedia();renderDashboard();toast('All media deleted','in')}
+  else if(type==='products'){for(const p of allProducts)await authFetch(API+`?action=products&id=${p.id}`,{method:'DELETE'});await loadProducts();renderProductsTable();renderDashboard();toast('All products deleted','in')}
+  else if(type==='reviews'){for(const r of allReviews)await authFetch(API+`?action=reviews&id=${r.id}`,{method:'DELETE'});await loadReviews();renderReviewsTable();renderDashboard();toast('All reviews deleted','in')}
 }
 </script>
 </body>

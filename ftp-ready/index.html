@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Blog</title>
+  <title id="pageTitle">My Blog</title>
   <meta name="description" content="A modern blog — ideas worth sharing." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -14,153 +14,122 @@
 <!-- ── Navigation ──────────────────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-in">
-    <a href="#home" class="nav-logo">My <span>Blog</span></a>
+    <a href="#home" class="nav-logo" id="navLogo">My <span>Blog</span></a>
     <div class="nav-links">
-      <a href="#posts">Posts</a>
-      <a href="#topics">Topics</a>
-      <a href="#about">About</a>
+      <a href="#services">Topics</a>
+      <a href="products.php">Products</a>
+      <a href="#posts">Blog</a>
+      <a href="#reviews">Reviews</a>
       <a href="#contact">Contact</a>
       <a href="admin/" class="nav-btn">Admin ↗</a>
     </div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()" aria-label="Menu">&#9776;</button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#services" onclick="toggleMenu()">Topics</a>
+    <a href="products.php" onclick="toggleMenu()">Products</a>
+    <a href="#posts" onclick="toggleMenu()">Blog</a>
+    <a href="#reviews" onclick="toggleMenu()">Reviews</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+    <a href="admin/" class="nav-btn" style="display:inline-block;margin-top:4px">Admin ↗</a>
   </div>
 </nav>
 
 <!-- ── Hero ────────────────────────────────────────────────────────────────── -->
 <section id="home" class="hero">
-  <div class="hero-tag">Latest Stories</div>
-  <h1>Ideas Worth<br><span>Sharing.</span></h1>
-  <p>Explore articles, tutorials, and thoughts on design, technology, and everything in between.</p>
-  <div class="search-wrap">
-    <input type="text" id="searchInput" placeholder="Search posts…" autocomplete="off" />
-    <button>Search</button>
-  </div>
-</section>
-
-<!-- ── Tag filter bar ──────────────────────────────────────────────────────── -->
-<div class="tags-bar" id="tagBar"></div>
-
-<!-- ── Latest Posts ────────────────────────────────────────────────────────── -->
-<section id="posts" class="posts-sec">
-  <div class="posts-top">
-    <h2>Latest Posts</h2>
-    <span class="cnt" id="postsCount"></span>
-  </div>
-  <div class="posts-grid" id="postsGrid">
-    <div class="loading"><div class="spinner"></div></div>
-  </div>
-  <div class="pagination" id="pagination"></div>
-</section>
-
-<!-- ── What We Cover ───────────────────────────────────────────────────────── -->
-<section id="topics" class="what-sec">
-  <div class="what-in">
-    <div class="sec-label">What We Cover</div>
-    <h2 class="sec-h">Everything you need<br>to <span>stay informed.</span></h2>
-    <p class="sec-p">From technical deep-dives to creative insights — there's something for every curious mind.</p>
-    <div class="cat-grid" style="margin-top:48px">
-      <div class="cat-card">
-        <div class="cat-ico">💻</div>
-        <div class="cat-title">Technology</div>
-        <div class="cat-desc">Deep dives into the tools, platforms, and innovations shaping our digital world today.</div>
-      </div>
-      <div class="cat-card">
-        <div class="cat-ico">🎨</div>
-        <div class="cat-title">Design</div>
-        <div class="cat-desc">Aesthetics, UX principles, and the art of creating beautiful, functional experiences.</div>
-      </div>
-      <div class="cat-card">
-        <div class="cat-ico">🚀</div>
-        <div class="cat-title">Business</div>
-        <div class="cat-desc">Startups, strategy, growth hacking, and hard-won lessons from the entrepreneurial trenches.</div>
-      </div>
-      <div class="cat-card">
-        <div class="cat-ico">📱</div>
-        <div class="cat-title">Development</div>
-        <div class="cat-desc">Code tutorials, best practices, architecture patterns, and everything software engineering.</div>
-      </div>
-      <div class="cat-card">
-        <div class="cat-ico">🌍</div>
-        <div class="cat-title">Lifestyle</div>
-        <div class="cat-desc">Productivity, mindfulness, travel, and practical tips for living with intention and clarity.</div>
-      </div>
-      <div class="cat-card">
-        <div class="cat-ico">🔬</div>
-        <div class="cat-title">Science</div>
-        <div class="cat-desc">Breaking research, emerging technologies, and the endlessly curious wonders of our universe.</div>
-      </div>
+  <div class="hero-content">
+    <div class="hero-tag" id="heroLabel">Latest Stories</div>
+    <h1 id="heroHeading">Ideas Worth<br><span id="heroAccent">Sharing.</span></h1>
+    <p id="heroSubtext">Explore articles, tutorials, and thoughts on design, technology, and everything in between.</p>
+    <div class="hero-btns">
+      <a class="btn-solid" href="#posts" id="ctaBtn1">Explore Posts</a>
+      <a class="btn-outline" href="#contact" id="ctaBtn2">Contact Us</a>
     </div>
+    <div class="hero-rating" id="heroRating">
+      <div class="stars" id="heroStars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <span id="heroRatingText">4.9 &middot; 48 Google reviews</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Services / Topics ────────────────────────────────────────────────────── -->
+<section id="services" class="services-sec">
+  <div class="sec-inner">
+    <div class="sec-label" id="servicesLabel">WHAT WE COVER</div>
+    <h2 class="sec-h"><span id="servicesTitle">Everything you need</span> <span id="servicesTitleAccent">to stay informed.</span></h2>
+    <p class="sec-p" id="servicesDesc">From technical deep-dives to creative insights — there's something for every curious mind.</p>
+    <div class="cat-grid" id="servicesGrid" style="margin-top:48px"></div>
   </div>
 </section>
 
 <!-- ── Stats band ──────────────────────────────────────────────────────────── -->
 <section class="stats-band">
   <div class="stats-in">
-    <div class="sec-label">Why Read Us</div>
-    <h2 class="sec-h">Numbers that<br><span>speak for us.</span></h2>
-    <div class="st-row">
-      <div class="st-card">
-        <div class="st-num">100+</div>
-        <div class="st-title">Articles Published</div>
-        <div class="st-desc">A growing library of in-depth, well-researched articles across all topics.</div>
+    <div class="sec-label" id="statsLabel">WHY READ US</div>
+    <h2 class="sec-h"><span id="statsTitle">Numbers that</span> <span id="statsTitleAccent">speak for us.</span></h2>
+    <div class="st-row" id="statsRow" style="margin-top:40px"></div>
+  </div>
+</section>
+
+<!-- ── Products Showcase ───────────────────────────────────────────────────── -->
+<section id="products" class="products-showcase">
+  <div class="sec-inner">
+    <div class="showcase-head">
+      <div>
+        <div class="sec-label" id="productsLabel">OUR PRODUCTS</div>
+        <h2 class="sec-h" style="margin-bottom:0"><span id="productsTitle">Top Picks</span> <span id="productsTitleAccent">for you.</span></h2>
       </div>
-      <div class="st-card">
-        <div class="st-num">20+</div>
-        <div class="st-title">Topics Covered</div>
-        <div class="st-desc">From tech and design to science and lifestyle — diverse and always expanding.</div>
-      </div>
-      <div class="st-card">
-        <div class="st-num">Weekly</div>
-        <div class="st-title">New Posts</div>
-        <div class="st-desc">Fresh content every week — no fillers, no clickbait, just real value.</div>
-      </div>
-      <div class="st-card">
-        <div class="st-num">Free</div>
-        <div class="st-title">Always Free</div>
-        <div class="st-desc">Every article is completely free to read. No paywalls, no subscriptions needed.</div>
-      </div>
+      <a href="products.php" class="view-all-link">View All Products &rarr;</a>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <div class="loading"><div class="spinner"></div></div>
     </div>
   </div>
 </section>
 
-<!-- ── About band ──────────────────────────────────────────────────────────── -->
+<!-- ── Reviews / Testimonials ─────────────────────────────────────────────── -->
+<section id="reviews" class="reviews-sec">
+  <div class="sec-inner">
+    <div class="sec-label" id="reviewsLabel">TESTIMONIALS</div>
+    <h2 class="sec-h"><span id="reviewsTitle">What our readers</span> <span id="reviewsTitleAccent">say.</span></h2>
+    <div class="reviews-grid" id="reviewsGrid" style="margin-top:44px">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Latest Posts ────────────────────────────────────────────────────────── -->
+<section id="posts" class="posts-sec">
+  <div class="sec-inner">
+    <div class="posts-top">
+      <div>
+        <div class="sec-label">LATEST ARTICLES</div>
+        <h2 class="sec-h" style="margin-bottom:0">From the Blog</h2>
+      </div>
+      <span class="cnt" id="postsCount"></span>
+    </div>
+    <div class="search-wrap" style="margin:28px 0 20px">
+      <input type="text" id="searchInput" placeholder="Search posts&hellip;" autocomplete="off" onkeydown="if(event.key==='Enter')searchPosts()" />
+      <button onclick="searchPosts()">Search</button>
+    </div>
+    <div class="tags-bar" id="tagBar"></div>
+    <div class="posts-grid" id="postsGrid">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</section>
+
+<!-- ── About ───────────────────────────────────────────────────────────────── -->
 <section id="about" class="about-band">
   <div class="about-in">
     <div class="about-l">
-      <div class="sec-label">About This Blog</div>
-      <h2 class="sec-h">Written with<br><span>passion.</span></h2>
-      <p class="sec-p">This blog exists to share ideas that challenge, inspire, and educate. Every post is written with care, backed by research, and designed to give you something real to take away. No noise — just signal.</p>
+      <div class="sec-label" id="aboutLabel">ABOUT THIS BLOG</div>
+      <h2 class="sec-h"><span id="aboutTitle">Written with</span><br><span id="aboutTitleAccent">passion.</span></h2>
+      <p class="sec-p" id="aboutText" style="margin-top:18px">This blog exists to share ideas that challenge, inspire, and educate. Every post is written with care, backed by research, and designed to give you something real to take away.</p>
     </div>
     <div class="about-r">
-      <div class="feat-list">
-        <div class="feat-item">
-          <div class="feat-ico">📖</div>
-          <div>
-            <div class="feat-t">In-Depth Articles</div>
-            <div class="feat-d">Long-form content that actually explains things properly — not just surface-level summaries.</div>
-          </div>
-        </div>
-        <div class="feat-item">
-          <div class="feat-ico">🎯</div>
-          <div>
-            <div class="feat-t">Actionable Insights</div>
-            <div class="feat-d">Every post ends with something you can apply today. Ideas you can act on immediately.</div>
-          </div>
-        </div>
-        <div class="feat-item">
-          <div class="feat-ico">🔄</div>
-          <div>
-            <div class="feat-t">Regular Updates</div>
-            <div class="feat-d">New content published consistently every week — bookmark it and come back often.</div>
-          </div>
-        </div>
-        <div class="feat-item">
-          <div class="feat-ico">💬</div>
-          <div>
-            <div class="feat-t">Community Focused</div>
-            <div class="feat-d">Written for real people with real questions. Your feedback shapes what we write next.</div>
-          </div>
-        </div>
-      </div>
+      <div class="feat-list" id="aboutFeatures"></div>
     </div>
   </div>
 </section>
@@ -169,43 +138,20 @@
 <section id="contact" class="contact-band">
   <div class="contact-in">
     <div class="contact-l">
-      <div class="sec-label">Get In Touch</div>
-      <h2 class="sec-h">Let's<br><span>connect.</span></h2>
-      <p class="sec-p">Have a story idea, want to collaborate, or just want to say hello? We'd love to hear from you.</p>
+      <div class="sec-label" id="contactLabel">GET IN TOUCH</div>
+      <h2 class="sec-h"><span id="contactTitle">Let's</span><br><span id="contactTitleAccent">connect.</span></h2>
+      <p class="sec-p" id="contactDesc" style="margin:14px 0 32px">Have a story idea, want to collaborate, or just want to say hello? We'd love to hear from you.</p>
       <div class="c-items">
-        <div class="c-item">
-          <div class="c-ico">✉️</div>
-          <div>
-            <div class="c-lbl">Email</div>
-            <div class="c-val"><a href="mailto:hello@myblog.com">hello@myblog.com</a></div>
-          </div>
-        </div>
-        <div class="c-item">
-          <div class="c-ico">💬</div>
-          <div>
-            <div class="c-lbl">WhatsApp</div>
-            <div class="c-val"><a href="https://wa.me/919888279429" target="_blank" rel="noopener">Chat with us</a></div>
-          </div>
-        </div>
-        <div class="c-item">
-          <div class="c-ico">🕐</div>
-          <div>
-            <div class="c-lbl">Response Time</div>
-            <div class="c-val">Mon – Sat, 9:00 AM – 6:00 PM</div>
-          </div>
-        </div>
-        <div class="c-item">
-          <div class="c-ico">📍</div>
-          <div>
-            <div class="c-lbl">Location</div>
-            <div class="c-val">Amritsar, Punjab, India</div>
-          </div>
-        </div>
+        <div class="c-item"><div class="c-ico">&#9993;&#65039;</div><div><div class="c-lbl">Email</div><div class="c-val"><a id="contactEmail" href="mailto:hello@myblog.com">hello@myblog.com</a></div></div></div>
+        <div class="c-item"><div class="c-ico">&#128222;</div><div><div class="c-lbl">Phone</div><div class="c-val"><a id="contactPhone" href="tel:+919888279429">098882 79429</a></div></div></div>
+        <div class="c-item"><div class="c-ico">&#128172;</div><div><div class="c-lbl">WhatsApp</div><div class="c-val"><a id="contactWhatsapp" href="https://wa.me/919888279429" target="_blank" rel="noopener">Chat with us</a></div></div></div>
+        <div class="c-item"><div class="c-ico">&#128336;</div><div><div class="c-lbl">Hours</div><div class="c-val" id="contactHours">Mon &ndash; Sat, 9:00 AM &ndash; 6:00 PM</div></div></div>
+        <div class="c-item"><div class="c-ico">&#128205;</div><div><div class="c-lbl">Location</div><div class="c-val" id="contactAddress">Amritsar, Punjab, India</div></div></div>
       </div>
     </div>
     <div class="contact-r">
       <div class="map-wrap">
-        <iframe
+        <iframe id="contactMap"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d109501.413965848!2d74.77448695!3d31.63400655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391963b6c23d3f79%3A0xf9f66b3d8aa5e982!2sAmritsar%2C%20Punjab!5e0!3m2!1sen!2sin!4v1719000000000!5m2!1sen!2sin"
           width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy"
           referrerpolicy="no-referrer-when-downgrade" title="Location Map">
@@ -217,9 +163,9 @@
 
 <!-- ── Footer ──────────────────────────────────────────────────────────────── -->
 <footer class="footer">
-  <p>© 2026 My Blog &nbsp;·&nbsp; <a href="#home">Back to top ↑</a> &nbsp;·&nbsp; <a href="admin/">Admin Panel</a></p>
+  <p id="footerText">&copy; 2026 My Blog &nbsp;&middot;&nbsp; <a href="#home">Back to top &uarr;</a> &nbsp;&middot;&nbsp; <a href="admin/">Admin Panel</a></p>
 </footer>
 
-<script src="assets/js/blog.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
