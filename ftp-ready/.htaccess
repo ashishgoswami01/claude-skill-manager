@@ -1,0 +1,13 @@
+Options -Indexes
+
+# Protect config and data files
+<FilesMatch "^(config\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Pretty URLs (optional)
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^post/([a-z0-9-]+)/?$ post.html?slug=$1 [L,QSA]

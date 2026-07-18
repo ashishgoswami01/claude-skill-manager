@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Home</title>
+  <meta name="description" content="A modern blog powered by Claude Skill Manager" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">✍️ My Blog</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#" onclick="document.getElementById('searchInput').focus();return false">Search</a>
+      <a href="admin/" class="nav-btn">Admin ↗</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Ideas Worth Sharing</h1>
+  <p>Explore articles, tutorials, and thoughts on technology, design, and everything in between.</p>
+  <div class="hero-search">
+    <input type="text" id="searchInput" placeholder="Search posts…" autocomplete="off" />
+    <button onclick="document.getElementById('searchInput').dispatchEvent(new Event('input'))">Search</button>
+  </div>
+</section>
+
+<div class="tags-bar" id="tagBar"></div>
+
+<section class="posts-section">
+  <div class="posts-header">
+    <h2>Latest Posts</h2>
+    <span class="posts-count" id="postsCount"></span>
+  </div>
+  <div class="posts-grid" id="postsGrid"></div>
+  <div class="pagination" id="pagination"></div>
+</section>
+
+<footer class="footer">
+  <p>Built with ❤️ · Powered by Netlify · <a href="admin/">Admin Panel</a></p>
+</footer>
+
+<script src="assets/js/blog.js"></script>
+</body>
+</html>
